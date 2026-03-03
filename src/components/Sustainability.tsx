@@ -46,10 +46,10 @@ export default function Sustainability() {
   ];
 
   const reports = [
-    { title: t.sustainability.report1 },
-    { title: t.sustainability.report2 },
-    { title: t.sustainability.report3 },
-    { title: t.sustainability.report4 },
+    { title: t.sustainability.report1, href: "/reports/estudio-impacto-ambiental.pdf" },
+    { title: t.sustainability.report2, href: "/reports/cambio-climatico.pdf" },
+    { title: t.sustainability.report3, href: "/reports/evaluacion-derechos-humanos.pdf" },
+    { title: t.sustainability.report4, href: "/reports/emisiones-gei.pdf" },
   ];
 
   return (
@@ -143,7 +143,7 @@ export default function Sustainability() {
               <h3 className="text-lg font-semibold text-white mb-6">{t.sustainability.reportsTitle}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {reports.map((report) => (
-                  <div key={report.title} className="group flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.03] p-4 transition-all duration-300 hover:border-accent-500/20 hover:bg-white/[0.05] cursor-pointer">
+                  <a key={report.title} href={report.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.03] p-4 transition-all duration-300 hover:border-accent-500/20 hover:bg-white/[0.05] cursor-pointer">
                     <div className="flex-shrink-0 rounded-lg bg-accent-500/10 p-2">
                       <svg className="h-5 w-5 text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -153,7 +153,7 @@ export default function Sustainability() {
                       <div className="text-xs font-medium text-white leading-tight">{report.title}</div>
                       <div className="text-xs text-navy-500 mt-0.5">PDF</div>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>

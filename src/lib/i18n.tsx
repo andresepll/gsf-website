@@ -73,7 +73,7 @@ const en = {
     tl4quarter: "May",
     tl4title: "Commercial Operation",
     tl4desc:
-      "Official declaration of commercial operation under PPA contract, delivering 470 MW of net capacity.",
+      "Official declaration of commercial operation, delivering 400 MW under PPA contract.",
     constructionTag: "Construction Progress",
     constructionTitle: "Current Images",
     constructionSubtitle:
@@ -244,7 +244,7 @@ const es: Translations = {
     tl4quarter: "Mayo",
     tl4title: "Operación Comercial",
     tl4desc:
-      "Declaratoria oficial de operación comercial bajo contrato PPA, alcanzando 470 MW de capacidad neta.",
+      "Declaratoria oficial de operación comercial, entregando 400 MW bajo contrato PPA.",
     constructionTag: "Avance de Construcción",
     constructionTitle: "Imágenes Actuales",
     constructionSubtitle:

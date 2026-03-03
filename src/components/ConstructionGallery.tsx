@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
@@ -70,25 +70,14 @@ export default function ConstructionGallery() {
           >
             {/* Main Image */}
             <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-[2.5/1]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={images[current].src}
-                    alt={images[current].alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 1200px"
-                    priority={current === 0}
-                  />
-                </motion.div>
-              </AnimatePresence>
+              <Image
+                src={images[current].src}
+                alt={images[current].alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 1200px"
+                priority={current === 0}
+              />
 
               {/* Gradient overlay at bottom */}
               <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/60 to-transparent" />

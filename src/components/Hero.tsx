@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 
 export default function Hero() {
@@ -9,24 +8,24 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-navy-950">
-      {/* Background gradient & geometric overlays */}
+      {/* Background video */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800" />
-        <div className="absolute inset-0 opacity-[0.07]">
-          <div className="absolute top-0 left-0 w-full h-full">
-            <div className="absolute top-[20%] left-[-10%] w-[120%] h-px bg-white rotate-[-8deg]" />
-            <div className="absolute top-[40%] left-[-10%] w-[120%] h-px bg-white rotate-[-8deg]" />
-            <div className="absolute top-[60%] left-[-10%] w-[120%] h-px bg-white rotate-[-8deg]" />
-            <div className="absolute top-[80%] left-[-10%] w-[120%] h-px bg-white rotate-[-8deg]" />
-          </div>
-        </div>
-        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-accent-500/5 blur-[120px]" />
-        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] rounded-full bg-accent-500/3 blur-[80px]" />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/videos/hero-bg.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-navy-950/70" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-24 pb-32 lg:flex-row lg:items-center lg:gap-16 lg:px-8">
-        <div className="flex-1 lg:max-w-2xl">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-24 pb-32 lg:px-8">
+        <div className="lg:max-w-3xl">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -122,36 +121,6 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Image Column — Floating turbine */}
-        <motion.div
-          initial={{ opacity: 0, x: 60, scale: 0.9 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-          className="hidden lg:flex flex-1 items-center justify-center"
-        >
-          <div className="relative">
-            <div className="absolute -inset-8 rounded-3xl border border-white/5 rotate-3" />
-            <div className="absolute -inset-16 rounded-3xl border border-white/[0.02] -rotate-2" />
-            <div className="relative animate-float">
-              <Image
-                src="/images/turbine-hero.png"
-                alt="GE Vernova 7HA.02 Gas Turbine"
-                width={560}
-                height={320}
-                className="drop-shadow-2xl"
-                priority
-              />
-              <div className="absolute -bottom-4 -right-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 px-4 py-3">
-                <div className="text-xs font-medium text-navy-300">
-                  {t.hero.turbineBadgeLabel}
-                </div>
-                <div className="text-sm font-bold text-white">
-                  {t.hero.turbineBadgeValue}
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
 
       {/* Bottom diagonal cut */}
