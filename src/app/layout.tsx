@@ -17,23 +17,23 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Generadora San Felipe | 470MW Combined Cycle Power Plant",
+  title: "Generadora San Felipe | 467MW Combined Cycle Power Plant",
   description:
-    "Generadora San Felipe is building a 470MW combined cycle power plant in the Dominican Republic, strengthening energy security and sustainable development with world-class GE Vernova 7HA.02 technology.",
+    "Generadora San Felipe is building a 467MW combined cycle power plant in the Dominican Republic, strengthening energy security and sustainable development with world-class GE Vernova 7HA.02 technology.",
   keywords: [
     "Generadora San Felipe",
     "power generation",
     "Dominican Republic",
     "combined cycle",
-    "470MW",
+    "467MW",
     "GE Vernova 7HA.02",
     "energy",
     "sustainability",
   ],
   openGraph: {
-    title: "Generadora San Felipe | 470MW Combined Cycle Power Plant",
+    title: "Generadora San Felipe | 467MW Combined Cycle Power Plant",
     description:
-      "Building the future of energy in the Dominican Republic with 470MW of efficient, reliable power generation.",
+      "Building the future of energy in the Dominican Republic with 467MW of efficient, reliable power generation.",
     type: "website",
   },
 };

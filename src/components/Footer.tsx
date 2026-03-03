@@ -105,7 +105,7 @@ export default function Footer() {
         {/* Partner Logos Row */}
         <div className="mt-12 border-t border-navy-200 pt-8">
           <div className="flex flex-wrap items-start gap-12">
-            {/* Nexgen Capital - Sponsor */}
+            {/* Nexgen Capital */}
             <div className="flex flex-col items-start gap-2">
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-400">
                 Sponsor
@@ -117,25 +117,6 @@ export default function Footer() {
                 height={128}
                 className="h-[4.5rem] w-auto rounded-sm"
               />
-            </div>
-            {/* TSK - EPC */}
-            <div className="flex flex-col items-start gap-2">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-400">
-                EPC
-              </span>
-              <a
-                href="https://www.grupotsk.com/proyecto/central-ciclo-combinado-generadora-san-felipe-470-mw/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  src="/images/logo-tsk.png"
-                  alt="TSK"
-                  width={100}
-                  height={40}
-                  className="h-10 w-auto hover:opacity-80 transition-opacity"
-                />
-              </a>
             </div>
           </div>
         </div>
