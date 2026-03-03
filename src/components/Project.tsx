@@ -230,13 +230,15 @@ export default function Project() {
           <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
             {impacts.map((impact, i) => (
               <FadeIn key={impact.title} delay={i * 0.1}>
-                <div className="group relative rounded-2xl border border-navy-100 bg-white p-8 transition-all duration-500 hover:border-accent-200 hover:shadow-xl hover:shadow-accent-500/5">
+                <div className="group relative h-full flex flex-col rounded-2xl border border-navy-100 bg-white p-8 transition-all duration-500 hover:border-accent-200 hover:shadow-xl hover:shadow-accent-500/5">
                   <div className="absolute top-0 right-0 h-24 w-24 overflow-hidden rounded-tr-2xl">
                     <div className="absolute -top-12 -right-12 h-24 w-24 rotate-45 bg-gradient-to-br from-accent-500/10 to-transparent" />
                   </div>
-                  <div className="inline-flex rounded-xl bg-navy-50 p-3 text-navy-600 group-hover:bg-accent-50 group-hover:text-accent-600 transition-colors">{impact.icon}</div>
-                  <h3 className="mt-5 text-xl font-semibold text-navy-900">{impact.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-navy-500">{impact.description}</p>
+                  <div className="flex items-center gap-3">
+                    <div className="inline-flex rounded-xl bg-navy-50 p-3 text-navy-600 group-hover:bg-accent-50 group-hover:text-accent-600 transition-colors">{impact.icon}</div>
+                    <h3 className="text-xl font-semibold text-navy-900">{impact.title}</h3>
+                  </div>
+                  <p className="mt-4 flex-1 text-sm leading-relaxed text-navy-500">{impact.description}</p>
                 </div>
               </FadeIn>
             ))}

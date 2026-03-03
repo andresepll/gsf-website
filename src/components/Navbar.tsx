@@ -50,14 +50,14 @@ export default function Navbar() {
         }`}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-8">
-          <Link href="/" className="relative h-10 w-[140px]">
+          <Link href="/" className="relative h-[3.75rem] w-[210px]">
             {/* Color logo for scrolled (white bg) */}
             <Image
               src="/images/logo-gsf-new.png"
               alt="Generadora San Felipe"
               width={200}
               height={60}
-              className={`absolute inset-0 h-10 w-auto object-contain object-left transition-opacity duration-500 ${
+              className={`absolute inset-0 h-[3.75rem] w-auto object-contain object-left transition-opacity duration-500 ${
                 scrolled ? "opacity-100" : "opacity-0"
               }`}
               priority
@@ -68,7 +68,7 @@ export default function Navbar() {
               alt="Generadora San Felipe"
               width={200}
               height={60}
-              className={`absolute inset-0 h-10 w-auto object-contain object-left brightness-0 invert transition-opacity duration-500 ${
+              className={`absolute inset-0 h-[3.75rem] w-auto object-contain object-left brightness-0 invert transition-opacity duration-500 ${
                 scrolled ? "opacity-0" : "opacity-100"
               }`}
               priority
@@ -102,7 +102,7 @@ export default function Navbar() {
             </button>
 
             <a
-              href="mailto:contacto@gsf.com.do"
+              href="#locations"
               className="rounded-full bg-accent-500 px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
             >
               {t.nav.contact}
@@ -184,7 +184,7 @@ export default function Navbar() {
               {locale === "en" ? "Cambiar a Español" : "Switch to English"}
             </motion.button>
             <motion.a
-              href="mailto:contacto@gsf.com.do"
+              href="#locations"
               onClick={() => setMobileOpen(false)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
