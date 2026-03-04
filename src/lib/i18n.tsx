@@ -135,6 +135,14 @@ const en = {
       "We maintain a transparent and accessible channel for all complaints, grievances, and reports.",
     complaintsBtn: "Submit a Report",
   },
+  news: {
+    tag: "In the News",
+    title: "GSF in the",
+    titleAccent: "Media",
+    subtitle:
+      "Coverage and mentions of the Generadora San Felipe project in national and international media.",
+    readMore: "Read Article",
+  },
   locations: {
     tag: "Our Locations",
     title: "Where to Find Us",
@@ -315,6 +323,14 @@ const es: Translations = {
     complaintsDesc:
       "Mantenemos un canal transparente y accesible para todas las quejas, reclamos y denuncias.",
     complaintsBtn: "Enviar un Reporte",
+  },
+  news: {
+    tag: "En los Medios",
+    title: "GSF en la",
+    titleAccent: "Prensa",
+    subtitle:
+      "Cobertura y menciones del proyecto Generadora San Felipe en medios nacionales e internacionales.",
+    readMore: "Leer Artículo",
   },
   locations: {
     tag: "Ubicaciones",
