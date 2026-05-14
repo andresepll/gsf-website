@@ -228,7 +228,14 @@ const en = {
     errorTitle: "We could not submit your report",
     errorDesc:
       "Please try again in a moment. If the problem persists, contact us at contacto@gsf.com.do.",
+    errorCaptchaTitle: "Verification needed",
+    errorCaptchaDesc:
+      "Please complete the security check below before submitting.",
+    errorRateLimitTitle: "Too many submissions",
+    errorRateLimitDesc:
+      "You have submitted several reports recently. Please try again later.",
     errorRetry: "Try again",
+    captchaLabel: "Security verification",
     returnHome: "Return Home",
     submitAnother: "Submit Another",
   },
@@ -453,7 +460,14 @@ const es: Translations = {
     errorTitle: "No pudimos enviar su reporte",
     errorDesc:
       "Por favor intente nuevamente en unos momentos. Si el problema persiste, escríbanos a contacto@gsf.com.do.",
+    errorCaptchaTitle: "Verificación requerida",
+    errorCaptchaDesc:
+      "Por favor complete la verificación de seguridad antes de enviar.",
+    errorRateLimitTitle: "Demasiados envíos",
+    errorRateLimitDesc:
+      "Ha enviado varios reportes recientemente. Por favor intente nuevamente más tarde.",
     errorRetry: "Reintentar",
+    captchaLabel: "Verificación de seguridad",
     returnHome: "Volver al Inicio",
     submitAnother: "Enviar Otro",
   },
