@@ -16,25 +16,85 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://gsf-website-sable.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Generadora San Felipe | 467MW Combined Cycle Power Plant",
+  metadataBase: new URL(SITE_URL),
+  title: "Generadora San Felipe | Central de ciclo combinado de 467 MW",
   description:
-    "Generadora San Felipe is building a 467MW combined cycle power plant in the Dominican Republic, strengthening energy security and sustainable development with world-class GE Vernova 7HA.02 technology.",
+    "Generadora San Felipe construye una central de ciclo combinado de 467 MW en República Dominicana — fortaleciendo la seguridad energética del país con tecnología GE Vernova 7HA.02 de clase mundial.",
   keywords: [
     "Generadora San Felipe",
+    "GSF",
+    "ciclo combinado",
+    "467 MW",
+    "República Dominicana",
+    "generación eléctrica",
+    "GE Vernova 7HA.02",
+    "energía",
+    "sostenibilidad",
+    "Pantone 2955",
     "power generation",
     "Dominican Republic",
     "combined cycle",
-    "467MW",
-    "GE Vernova 7HA.02",
-    "energy",
-    "sustainability",
   ],
+  alternates: {
+    canonical: "/",
+    languages: {
+      "es-DO": "/",
+      en: "/",
+    },
+  },
   openGraph: {
-    title: "Generadora San Felipe | 467MW Combined Cycle Power Plant",
+    title: "Generadora San Felipe | Central de ciclo combinado de 467 MW",
     description:
-      "Building the future of energy in the Dominican Republic with 467MW of efficient, reliable power generation.",
+      "Construyendo el futuro energético de la República Dominicana: 467 MW de generación eficiente, confiable y sostenible.",
     type: "website",
+    locale: "es_DO",
+    alternateLocale: ["en_US"],
+    siteName: "Generadora San Felipe",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Vista aérea del sitio de construcción de Generadora San Felipe",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Generadora San Felipe | Central de ciclo combinado de 467 MW",
+    description:
+      "Construyendo el futuro energético de la República Dominicana: 467 MW de generación eficiente, confiable y sostenible.",
+    images: ["/images/og-image.jpg"],
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Generadora San Felipe Limited Partnership",
+  alternateName: "GSF",
+  url: SITE_URL,
+  logo: `${SITE_URL}/images/logo-gsf-new.png`,
+  description:
+    "Generadora San Felipe construye una central de ciclo combinado de 467 MW en República Dominicana con tecnología GE Vernova 7HA.02.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Av. Gustavo Mejía Ricart #102, Suite 701",
+    addressLocality: "Santo Domingo",
+    addressRegion: "Piantini",
+    addressCountry: "DO",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+1-809-563-8182",
+    email: "contacto@gsf.com.do",
+    contactType: "customer service",
+    areaServed: "DO",
+    availableLanguage: ["Spanish", "English"],
   },
 };
 
@@ -48,6 +108,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
         <Providers>
           <Navbar />
           <main>{children}</main>
