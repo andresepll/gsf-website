@@ -104,9 +104,9 @@ export default function Footer() {
 
         {/* Partner Logos Row */}
         <div className="mt-12 border-t border-navy-200 pt-8">
-          <div className="flex flex-wrap items-start justify-between gap-12">
+          <div className="flex flex-wrap items-center justify-between gap-x-12 gap-y-6">
             {/* Nexgen Capital */}
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex items-center gap-4">
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-500">
                 Sponsor
               </span>
@@ -120,7 +120,7 @@ export default function Footer() {
             </div>
 
             {/* Social */}
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex items-center gap-4">
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-500">
                 {t.footer.followUs}
               </span>
