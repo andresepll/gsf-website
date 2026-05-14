@@ -1,24 +1,27 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 
 export default function Hero() {
   const { t } = useI18n();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-navy-950">
-      {/* Background video */}
+      {/* Background video — disabled when user prefers reduced motion */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src="/videos/hero-bg.mp4" type="video/mp4" />
-        </video>
+        {!prefersReducedMotion && (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          >
+            <source src="/videos/hero-bg.mp4" type="video/mp4" />
+          </video>
+        )}
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-navy-950/70" />
       </div>
@@ -59,7 +62,7 @@ export default function Hero() {
                 className="group inline-flex items-center gap-2 rounded-full bg-accent-500 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-xl hover:shadow-accent-500/25"
               >
                 {t.hero.cta}
-                <svg
+                <svg aria-hidden="true"
                   className="h-4 w-4 transition-transform group-hover:translate-x-1"
                   fill="none"
                   viewBox="0 0 24 24"

@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import SectionEyebrow from "./SectionEyebrow";
 
 const locations = [
   {
@@ -37,13 +38,7 @@ export default function Locations() {
           transition={{ duration: 0.6 }}
         >
           <div className="mb-10">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <div className="h-px w-12 bg-accent-500" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">
-                {t.locations.tag}
-              </span>
-              <div className="h-px w-12 bg-accent-500" />
-            </div>
+            <SectionEyebrow label={t.locations.tag} centered />
             <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
               {t.locations.title}
             </h2>
@@ -67,6 +62,8 @@ export default function Locations() {
                   <button
                     key={location.id}
                     onClick={() => setSelected(i)}
+                    aria-pressed={isSelected}
+                    aria-label={`${label} — ${address.replace(/\n/g, ", ")}`}
                     className={`w-full text-left rounded-xl border p-5 transition-all duration-300 ${
                       isSelected
                         ? "border-accent-500 bg-accent-50 shadow-sm"
@@ -81,7 +78,7 @@ export default function Locations() {
                             : "bg-navy-100 text-navy-500"
                         }`}
                       >
-                        <svg
+                        <svg aria-hidden="true"
                           className="h-5 w-5"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -122,10 +119,10 @@ export default function Locations() {
                 href={loc.mapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium text-accent-600 hover:text-accent-700 transition-colors mt-2"
+                className="inline-flex items-center gap-2 min-h-[44px] text-sm font-medium text-accent-700 hover:text-accent-800 transition-colors mt-2"
               >
                 {t.locations.openMaps}
-                <svg
+                <svg aria-hidden="true"
                   className="h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"

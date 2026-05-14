@@ -38,19 +38,6 @@ const config: Config = {
           800: "#006826",
           900: "#004a1b",
         },
-        // Keep energy as an alias for the green
-        energy: {
-          50: "#e6f7ec",
-          100: "#c0ebd0",
-          200: "#96deb1",
-          300: "#6ad191",
-          400: "#47c77a",
-          500: "#009B3A",
-          600: "#008c34",
-          700: "#007a2d",
-          800: "#006826",
-          900: "#004a1b",
-        },
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],

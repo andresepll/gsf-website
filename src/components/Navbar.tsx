@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,29 +8,63 @@ import { useI18n } from "@/lib/i18n";
 
 export default function Navbar() {
   const { locale, setLocale, t } = useI18n();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
     { href: "#project", label: t.nav.project },
     { href: "#sustainability", label: t.nav.sustainability },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+  // Body scroll lock + focus management while menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      // Move focus into the menu after the open animation has had a moment
+      const t = setTimeout(() => {
+        menuRef.current
+          ?.querySelector<HTMLElement>('a, button')
+          ?.focus();
+      }, 50);
+      return () => {
+        clearTimeout(t);
+        document.body.style.overflow = "";
+      };
     }
-    return () => {
-      document.body.style.overflow = "";
+    // On close: restore focus to hamburger and unlock scroll
+    document.body.style.overflow = "";
+    hamburgerRef.current?.focus();
+  }, [mobileOpen]);
+
+  // Tab trap + Escape to close while the menu is open
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        return;
+      }
+      if (e.key === "Tab" && menuRef.current) {
+        const focusables = Array.from(
+          menuRef.current.querySelectorAll<HTMLElement>(
+            'a, button:not([disabled])'
+          )
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, [mobileOpen]);
 
   const toggleLocale = () => {
@@ -43,104 +77,73 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-white/90 backdrop-blur-md shadow-sm"
-            : "bg-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md shadow-sm"
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-8">
           <Link href="/" className="relative h-[3.75rem] w-[210px]">
-            {/* Color logo for scrolled (white bg) */}
             <Image
               src="/images/logo-gsf-new.png"
               alt="Generadora San Felipe"
               width={200}
               height={60}
-              className={`absolute inset-0 h-[3.75rem] w-auto object-contain object-left transition-opacity duration-500 ${
-                scrolled ? "opacity-100" : "opacity-0"
-              }`}
-              priority
-            />
-            {/* White logo for hero (dark bg) */}
-            <Image
-              src="/images/logo-gsf-new.png"
-              alt="Generadora San Felipe"
-              width={200}
-              height={60}
-              className={`absolute inset-0 h-[3.75rem] w-auto object-contain object-left brightness-0 invert transition-opacity duration-500 ${
-                scrolled ? "opacity-0" : "opacity-100"
-              }`}
+              className="absolute inset-0 h-[3.75rem] w-auto object-contain object-left"
               priority
             />
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium tracking-wide transition-colors duration-300 hover:text-accent-500 ${
-                  scrolled ? "text-navy-700" : "text-white/90"
-                }`}
+                className="inline-flex items-center min-h-[44px] px-2 text-sm font-medium tracking-wide text-navy-700 hover:text-accent-500 transition-colors duration-300"
               >
                 {link.label}
               </a>
             ))}
 
-            {/* Language Toggle */}
             <button
               onClick={toggleLocale}
-              className={`text-xs font-bold tracking-wider uppercase border rounded-full px-3 py-1 transition-all duration-300 ${
-                scrolled
-                  ? "border-navy-200 text-navy-600 hover:bg-navy-50"
-                  : "border-white/20 text-white/80 hover:bg-white/10"
-              }`}
+              aria-label={t.langToggleAriaLabel}
+              className="inline-flex items-center min-h-[44px] text-xs font-bold tracking-wider uppercase border border-navy-200 text-navy-600 rounded-full px-4 hover:bg-navy-50 transition-all duration-300"
             >
               {locale === "en" ? "ES" : "EN"}
             </button>
 
             <a
               href="#locations"
-              className="rounded-full bg-accent-500 px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
+              className="inline-flex items-center min-h-[44px] rounded-full bg-accent-500 px-5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
             >
               {t.nav.contact}
             </a>
           </div>
 
-          {/* Mobile Hamburger */}
           <button
+            ref={hamburgerRef}
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden relative z-50 h-10 w-10 flex items-center justify-center"
-            aria-label="Toggle menu"
+            className="md:hidden relative z-50 h-11 w-11 flex items-center justify-center"
+            aria-label={mobileOpen ? t.nav.closeMenu : t.nav.openMenu}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             <div className="flex flex-col gap-1.5">
               <span
                 className={`block h-0.5 w-6 transition-all duration-300 ${
                   mobileOpen
                     ? "rotate-45 translate-y-2 bg-white"
-                    : scrolled
-                    ? "bg-navy-900"
-                    : "bg-white"
+                    : "bg-navy-900"
                 }`}
               />
               <span
                 className={`block h-0.5 w-6 transition-all duration-300 ${
-                  mobileOpen
-                    ? "opacity-0"
-                    : scrolled
-                    ? "bg-navy-900"
-                    : "bg-white"
+                  mobileOpen ? "opacity-0" : "bg-navy-900"
                 }`}
               />
               <span
                 className={`block h-0.5 w-6 transition-all duration-300 ${
                   mobileOpen
                     ? "-rotate-45 -translate-y-2 bg-white"
-                    : scrolled
-                    ? "bg-navy-900"
-                    : "bg-white"
+                    : "bg-navy-900"
                 }`}
               />
             </div>
@@ -148,10 +151,14 @@ export default function Navbar() {
         </nav>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            ref={menuRef}
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.nav.menuLabel}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

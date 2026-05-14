@@ -1,16 +1,40 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  ReactNode,
+} from "react";
+
+const STORAGE_KEY = "gsf-locale";
+const ANNOUNCEMENT_CLEAR_MS = 1500;
 
 export type Locale = "en" | "es";
 
 type Translations = typeof en;
 
 const en = {
+  skipToContent: "Skip to main content",
+  langToggleAriaLabel: "Switch to Spanish",
+  langChanged: "Language changed to English",
+  form: {
+    requiredHint: "Fields marked with * are required.",
+    requiredMark: "required",
+  },
+  slideshow: {
+    slideOf: "of",
+  },
   nav: {
     project: "Project",
     sustainability: "Sustainability",
     contact: "Contact Us",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    menuLabel: "Navigation menu",
   },
   hero: {
     badge: "467MW Combined Cycle — Under Construction",
@@ -54,6 +78,8 @@ const en = {
     locationGas: "Natural gas supplied via ENADOM storage & regasification",
     timelineTag: "Timeline",
     timelineTitle: "Project Milestones",
+    statusCompleted: "Completed",
+    statusUpcoming: "Upcoming",
     tl1year: "2024",
     tl1quarter: "April",
     tl1title: "Notice to Proceed",
@@ -79,6 +105,9 @@ const en = {
     constructionSubtitle:
       "Aerial views of the GSF-1 construction site showing the latest progress.",
     constructionDate: "March 2, 2026",
+    constructionZoomHint: "Click to enlarge",
+    constructionPause: "Pause slideshow",
+    constructionPlay: "Play slideshow",
     impactTag: "Impact",
     impactTitle: "Strategic infrastructure for sustainable development",
     impactSubtitle:
@@ -130,10 +159,12 @@ const en = {
     report2: "Climate Change Assessment",
     report3: "Human Rights Evaluation",
     report4: "GHG Emissions Report",
-    complaintsTitle: "Complaints & Grievance Mechanism",
-    complaintsDesc:
-      "We maintain a transparent and accessible channel for all complaints, grievances, and reports.",
-    complaintsBtn: "Submit a Report",
+  },
+  complaintsSection: {
+    tag: "Transparency",
+    title: "Complaints & Grievance Channel",
+    desc: "We maintain a transparent and accessible channel for all complaints, grievances, and reports related to our operations.",
+    btn: "Submit a Report",
   },
   news: {
     tag: "In the News",
@@ -191,13 +222,32 @@ const en = {
     returnHome: "Return Home",
     submitAnother: "Submit Another",
   },
+  lightbox: {
+    close: "Close",
+    previous: "Previous image",
+    next: "Next image",
+    dialogLabel: "Enlarged image",
+  },
 };
 
 const es: Translations = {
+  skipToContent: "Saltar al contenido principal",
+  langToggleAriaLabel: "Cambiar a inglés",
+  langChanged: "Idioma cambiado al español",
+  form: {
+    requiredHint: "Los campos marcados con * son obligatorios.",
+    requiredMark: "obligatorio",
+  },
+  slideshow: {
+    slideOf: "de",
+  },
   nav: {
     project: "Proyecto",
     sustainability: "Sostenibilidad",
     contact: "Contáctenos",
+    openMenu: "Abrir menú",
+    closeMenu: "Cerrar menú",
+    menuLabel: "Menú de navegación",
   },
   hero: {
     badge: "467MW Ciclo Combinado — En Construcción",
@@ -242,6 +292,8 @@ const es: Translations = {
       "Abastecimiento de gas natural a través de almacenamiento y regasificación de ENADOM",
     timelineTag: "Cronograma",
     timelineTitle: "Hitos del Proyecto",
+    statusCompleted: "Completado",
+    statusUpcoming: "Próximo",
     tl1year: "2024",
     tl1quarter: "Abril",
     tl1title: "Aviso de Inicio",
@@ -267,6 +319,9 @@ const es: Translations = {
     constructionSubtitle:
       "Vistas aéreas del sitio de construcción de GSF-1 mostrando el avance más reciente.",
     constructionDate: "2 de marzo de 2026",
+    constructionZoomHint: "Click para ampliar",
+    constructionPause: "Pausar presentación",
+    constructionPlay: "Reanudar presentación",
     impactTag: "Impacto",
     impactTitle:
       "Infraestructura estratégica para el desarrollo sostenible",
@@ -319,10 +374,12 @@ const es: Translations = {
     report2: "Evaluación de Cambio Climático",
     report3: "Evaluación de Derechos Humanos",
     report4: "Reporte de Emisiones GEI",
-    complaintsTitle: "Canal de Quejas y Denuncias",
-    complaintsDesc:
-      "Mantenemos un canal transparente y accesible para todas las quejas, reclamos y denuncias.",
-    complaintsBtn: "Enviar un Reporte",
+  },
+  complaintsSection: {
+    tag: "Transparencia",
+    title: "Canal de Quejas y Denuncias",
+    desc: "Mantenemos un canal transparente y accesible para todas las quejas, reclamos y denuncias relacionadas con nuestras operaciones.",
+    btn: "Enviar un Reporte",
   },
   news: {
     tag: "En los Medios",
@@ -380,6 +437,12 @@ const es: Translations = {
     returnHome: "Volver al Inicio",
     submitAnother: "Enviar Otro",
   },
+  lightbox: {
+    close: "Cerrar",
+    previous: "Imagen anterior",
+    next: "Imagen siguiente",
+    dialogLabel: "Imagen ampliada",
+  },
 };
 
 const translations = { en, es };
@@ -398,15 +461,73 @@ const I18nContext = createContext<I18nContextType>({
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("es");
+  const [hydrated, setHydrated] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
+  const announcementTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const t = translations[locale];
 
+  // On mount: detect saved preference, or fall back to browser language
+  useEffect(() => {
+    let detected: Locale = "es";
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === "en" || saved === "es") {
+        detected = saved;
+      } else {
+        const browserLang = navigator.language?.toLowerCase();
+        if (browserLang?.startsWith("en")) detected = "en";
+      }
+    } catch {
+      // localStorage may be unavailable (private mode, blocked storage)
+    }
+    setLocale(detected);
+    setHydrated(true);
+  }, []);
+
+  // Persist locale and keep <html lang> in sync for SEO + screen readers.
+  // Skip until hydrated so we don't clobber a saved preference with the default.
+  useEffect(() => {
+    if (!hydrated) return;
+    document.documentElement.lang = locale;
+    try {
+      localStorage.setItem(STORAGE_KEY, locale);
+    } catch {
+      // ignore
+    }
+  }, [locale, hydrated]);
+
   const handleSetLocale = useCallback((newLocale: Locale) => {
-    setLocale(newLocale);
+    setLocale((current) => {
+      if (newLocale !== current) {
+        // Announce in the new locale so the screen reader pronounces it correctly
+        setAnnouncement(translations[newLocale].langChanged);
+        // Cancel any pending clear so rapid toggles don't queue stale callbacks
+        if (announcementTimerRef.current) {
+          clearTimeout(announcementTimerRef.current);
+        }
+        announcementTimerRef.current = setTimeout(() => {
+          setAnnouncement("");
+          announcementTimerRef.current = null;
+        }, ANNOUNCEMENT_CLEAR_MS);
+      }
+      return newLocale;
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (announcementTimerRef.current) {
+        clearTimeout(announcementTimerRef.current);
+      }
+    };
   }, []);
 
   return (
     <I18nContext.Provider value={{ locale, setLocale: handleSetLocale, t }}>
       {children}
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {announcement}
+      </div>
     </I18nContext.Provider>
   );
 }

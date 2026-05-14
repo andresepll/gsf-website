@@ -29,10 +29,10 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-400 mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.navTitle}
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               {[
                 { href: "#project", label: t.nav.project },
                 { href: "#sustainability", label: t.nav.sustainability },
@@ -40,7 +40,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm text-navy-600 hover:text-accent-600 transition-colors"
+                    className="inline-flex items-center min-h-[44px] text-sm text-navy-600 hover:text-accent-600 transition-colors"
                   >
                     {link.label}
                   </a>
@@ -51,16 +51,16 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-400 mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.resourcesTitle}
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               <li>
                 <a
                   href="https://www.grupotsk.com/proyecto/central-ciclo-combinado-generadora-san-felipe-470-mw/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-navy-600 hover:text-accent-600 transition-colors"
+                  className="inline-flex items-center min-h-[44px] text-sm text-navy-600 hover:text-accent-600 transition-colors"
                 >
                   {t.footer.epc}
                 </a>
@@ -70,14 +70,14 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-400 mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.contactTitle}
             </h4>
             <ul className="space-y-3 text-sm text-navy-600">
               <li>
                 <a
                   href="mailto:contacto@gsf.com.do"
-                  className="hover:text-accent-600 transition-colors"
+                  className="inline-flex items-center min-h-[44px] hover:text-accent-600 transition-colors"
                 >
                   contacto@gsf.com.do
                 </a>
@@ -85,7 +85,7 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:+18095638182"
-                  className="hover:text-accent-600 transition-colors"
+                  className="inline-flex items-center min-h-[44px] hover:text-accent-600 transition-colors"
                 >
                   (809) 563-8182
                 </a>
@@ -93,7 +93,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/complaints"
-                  className="hover:text-accent-600 transition-colors"
+                  className="inline-flex items-center min-h-[44px] hover:text-accent-600 transition-colors"
                 >
                   {t.footer.complaints}
                 </Link>
@@ -107,7 +107,7 @@ export default function Footer() {
           <div className="flex flex-wrap items-start gap-12">
             {/* Nexgen Capital */}
             <div className="flex flex-col items-start gap-2">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-400">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-500">
                 Sponsor
               </span>
               <Image
@@ -122,7 +122,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-navy-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-navy-400">
+          <p className="text-xs text-navy-500">
             &copy; {new Date().getFullYear()} Generadora San Felipe Limited
             Partnership. {t.footer.copyright}
           </p>
