@@ -18,6 +18,14 @@ type Translations = typeof en;
 const en = {
   skipToContent: "Skip to main content",
   langToggleAriaLabel: "Switch to Spanish",
+  langChanged: "Language changed to English",
+  form: {
+    requiredHint: "Fields marked with * are required.",
+    requiredMark: "required",
+  },
+  slideshow: {
+    slideOf: "of",
+  },
   nav: {
     project: "Project",
     sustainability: "Sustainability",
@@ -220,6 +228,14 @@ const en = {
 const es: Translations = {
   skipToContent: "Saltar al contenido principal",
   langToggleAriaLabel: "Cambiar a inglés",
+  langChanged: "Idioma cambiado al español",
+  form: {
+    requiredHint: "Los campos marcados con * son obligatorios.",
+    requiredMark: "obligatorio",
+  },
+  slideshow: {
+    slideOf: "de",
+  },
   nav: {
     project: "Proyecto",
     sustainability: "Sostenibilidad",
@@ -438,6 +454,7 @@ const I18nContext = createContext<I18nContextType>({
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("es");
   const [hydrated, setHydrated] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
   const t = translations[locale];
 
   // On mount: detect saved preference, or fall back to browser language
@@ -471,12 +488,23 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, [locale, hydrated]);
 
   const handleSetLocale = useCallback((newLocale: Locale) => {
-    setLocale(newLocale);
+    setLocale((current) => {
+      if (newLocale !== current) {
+        // Announce in the new locale so the screen reader pronounces it correctly
+        setAnnouncement(translations[newLocale].langChanged);
+        // Clear after a brief moment so the live region is empty for next time
+        setTimeout(() => setAnnouncement(""), 1500);
+      }
+      return newLocale;
+    });
   }, []);
 
   return (
     <I18nContext.Provider value={{ locale, setLocale: handleSetLocale, t }}>
       {children}
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {announcement}
+      </div>
     </I18nContext.Provider>
   );
 }

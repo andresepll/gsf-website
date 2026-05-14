@@ -126,6 +126,10 @@ export default function ComplaintsPage() {
             onSubmit={handleSubmit}
             className="space-y-8"
           >
+            <p className="text-xs text-navy-500">
+              {t.form.requiredHint}
+            </p>
+
             {/* Type */}
             <div>
               <label className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.typeLabel}</label>
@@ -184,14 +188,22 @@ export default function ComplaintsPage() {
 
             {/* Subject */}
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.subjectLabel}</label>
-              <input type="text" id="subject" name="subject" value={form.subject} onChange={handleChange} required className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.subjectPlaceholder} />
+              <label htmlFor="subject" className="block text-sm font-medium text-navy-900 mb-2">
+                {t.complaints.subjectLabel}
+                <span aria-hidden="true" className="text-amber-700 ml-1">*</span>
+                <span className="sr-only"> ({t.form.requiredMark})</span>
+              </label>
+              <input type="text" id="subject" name="subject" value={form.subject} onChange={handleChange} required aria-required="true" className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.subjectPlaceholder} />
             </div>
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.descLabel}</label>
-              <textarea id="description" name="description" value={form.description} onChange={handleChange} required rows={6} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all resize-none" placeholder={t.complaints.descPlaceholder} />
+              <label htmlFor="description" className="block text-sm font-medium text-navy-900 mb-2">
+                {t.complaints.descLabel}
+                <span aria-hidden="true" className="text-amber-700 ml-1">*</span>
+                <span className="sr-only"> ({t.form.requiredMark})</span>
+              </label>
+              <textarea id="description" name="description" value={form.description} onChange={handleChange} required aria-required="true" rows={6} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all resize-none" placeholder={t.complaints.descPlaceholder} />
             </div>
 
             {/* Submit */}

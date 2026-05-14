@@ -101,7 +101,16 @@ export default function ConstructionGallery() {
             }}
           >
             {/* Main Image */}
-            <div className="group relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-[2.5/1]">
+            <div
+              className="group relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-[2.5/1]"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${current + 1} ${t.slideshow.slideOf} ${images.length}: ${images[current].alt}`}
+            >
+              {/* Live region announces the current slide to screen readers */}
+              <div aria-live="polite" aria-atomic="true" className="sr-only">
+                {`${current + 1} ${t.slideshow.slideOf} ${images.length}`}
+              </div>
               <Image
                 src={images[current].src}
                 alt={images[current].alt}
