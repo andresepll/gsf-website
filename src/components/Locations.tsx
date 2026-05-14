@@ -67,6 +67,8 @@ export default function Locations() {
                   <button
                     key={location.id}
                     onClick={() => setSelected(i)}
+                    aria-pressed={isSelected}
+                    aria-label={`${label} — ${address.replace(/\n/g, ", ")}`}
                     className={`w-full text-left rounded-xl border p-5 transition-all duration-300 ${
                       isSelected
                         ? "border-accent-500 bg-accent-50 shadow-sm"

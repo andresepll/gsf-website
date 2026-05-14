@@ -151,6 +151,9 @@ export default function ComplaintsPage() {
             <div className="flex items-center gap-3">
               <button
                 type="button"
+                role="switch"
+                aria-checked={form.anonymous}
+                aria-label={t.complaints.anonymous}
                 onClick={() => setForm((prev) => ({ ...prev, anonymous: !prev.anonymous }))}
                 className={`relative h-6 w-11 rounded-full transition-colors ${form.anonymous ? "bg-accent-500" : "bg-navy-200"}`}
               >
