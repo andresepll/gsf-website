@@ -203,9 +203,18 @@ export default function Project() {
                   <div className={`absolute left-4 md:left-1/2 top-2 h-2.5 w-2.5 -translate-x-[5px] md:-translate-x-[5px] rounded-full ring-[3px] ring-navy-50 z-10 ${isCompleted ? "bg-accent-500" : "bg-amber-500"}`} />
                   <div className={`ml-10 md:ml-0 md:w-[calc(50%-1.5rem)] ${i % 2 === 0 ? "md:pr-6 md:text-right" : "md:pl-6"}`}>
                     <div className="rounded-lg bg-white px-5 py-4 shadow-sm border border-navy-100 hover:shadow-md transition-shadow">
-                      <div className="inline-flex items-center gap-2 mb-1.5">
+                      <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 mb-1.5 ${i % 2 === 0 ? "md:justify-end" : ""}`}>
                         <span className={`text-xs font-bold ${isCompleted ? "text-accent-600" : "text-amber-700"}`}>{item.year}</span>
                         <span className="text-[11px] text-navy-500">{item.quarter}</span>
+                        <span
+                          className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                            isCompleted
+                              ? "bg-accent-50 text-accent-700"
+                              : "bg-amber-50 text-amber-700"
+                          }`}
+                        >
+                          {isCompleted ? t.project.statusCompleted : t.project.statusUpcoming}
+                        </span>
                       </div>
                       <h3 className="text-sm font-semibold text-navy-900 leading-snug">{item.title}</h3>
                       <p className="mt-1 text-xs text-navy-500 leading-relaxed">{item.description}</p>
