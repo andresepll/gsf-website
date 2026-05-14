@@ -122,7 +122,7 @@ export default function Navbar() {
             ref={hamburgerRef}
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden relative z-50 h-11 w-11 flex items-center justify-center"
-            aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={mobileOpen ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
           >
@@ -158,7 +158,7 @@ export default function Navbar() {
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
-            aria-label="Menú de navegación"
+            aria-label={t.nav.menuLabel}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

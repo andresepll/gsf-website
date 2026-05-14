@@ -5,30 +5,8 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import ConstructionGallery from "./ConstructionGallery";
-
-function FadeIn({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+import FadeIn from "./FadeIn";
+import SectionEyebrow from "./SectionEyebrow";
 
 export default function Project() {
   const { t } = useI18n();
@@ -115,12 +93,7 @@ export default function Project() {
       <div className="bg-white py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <FadeIn>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-12 bg-accent-500" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">
-                {t.project.tag}
-              </span>
-            </div>
+            <SectionEyebrow label={t.project.tag} />
             <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl lg:text-5xl">
               {t.project.title1}{" "}
               <span className="text-navy-500">{t.project.title2}</span>
@@ -185,11 +158,7 @@ export default function Project() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <FadeIn>
             <div className="text-center">
-              <div className="inline-flex items-center gap-3 mb-4">
-                <div className="h-px w-12 bg-accent-500" />
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">{t.project.timelineTag}</span>
-                <div className="h-px w-12 bg-accent-500" />
-              </div>
+              <SectionEyebrow label={t.project.timelineTag} centered />
               <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">{t.project.timelineTitle}</h2>
             </div>
           </FadeIn>
@@ -235,11 +204,7 @@ export default function Project() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <FadeIn>
             <div className="text-center max-w-3xl mx-auto">
-              <div className="inline-flex items-center gap-3 mb-4">
-                <div className="h-px w-12 bg-accent-500" />
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">{t.project.impactTag}</span>
-                <div className="h-px w-12 bg-accent-500" />
-              </div>
+              <SectionEyebrow label={t.project.impactTag} centered />
               <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">{t.project.impactTitle}</h2>
               <p className="mt-4 text-lg text-navy-500">{t.project.impactSubtitle}</p>
             </div>

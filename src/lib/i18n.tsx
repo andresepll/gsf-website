@@ -6,10 +6,12 @@ import {
   useState,
   useCallback,
   useEffect,
+  useRef,
   ReactNode,
 } from "react";
 
 const STORAGE_KEY = "gsf-locale";
+const ANNOUNCEMENT_CLEAR_MS = 1500;
 
 export type Locale = "en" | "es";
 
@@ -30,6 +32,9 @@ const en = {
     project: "Project",
     sustainability: "Sustainability",
     contact: "Contact Us",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    menuLabel: "Navigation menu",
   },
   hero: {
     badge: "467MW Combined Cycle — Under Construction",
@@ -240,6 +245,9 @@ const es: Translations = {
     project: "Proyecto",
     sustainability: "Sostenibilidad",
     contact: "Contáctenos",
+    openMenu: "Abrir menú",
+    closeMenu: "Cerrar menú",
+    menuLabel: "Menú de navegación",
   },
   hero: {
     badge: "467MW Ciclo Combinado — En Construcción",
@@ -455,6 +463,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("es");
   const [hydrated, setHydrated] = useState(false);
   const [announcement, setAnnouncement] = useState("");
+  const announcementTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const t = translations[locale];
 
   // On mount: detect saved preference, or fall back to browser language
@@ -492,11 +501,25 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       if (newLocale !== current) {
         // Announce in the new locale so the screen reader pronounces it correctly
         setAnnouncement(translations[newLocale].langChanged);
-        // Clear after a brief moment so the live region is empty for next time
-        setTimeout(() => setAnnouncement(""), 1500);
+        // Cancel any pending clear so rapid toggles don't queue stale callbacks
+        if (announcementTimerRef.current) {
+          clearTimeout(announcementTimerRef.current);
+        }
+        announcementTimerRef.current = setTimeout(() => {
+          setAnnouncement("");
+          announcementTimerRef.current = null;
+        }, ANNOUNCEMENT_CLEAR_MS);
       }
       return newLocale;
     });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (announcementTimerRef.current) {
+        clearTimeout(announcementTimerRef.current);
+      }
+    };
   }, []);
 
   return (

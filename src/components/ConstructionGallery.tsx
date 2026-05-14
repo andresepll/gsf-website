@@ -5,6 +5,9 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import Lightbox from "./Lightbox";
+import SectionEyebrow from "./SectionEyebrow";
+
+const AUTO_ADVANCE_MS = 4000;
 
 const images = [
   { src: "/images/construction-1.jpg", alt: "Construction progress — aerial view 1" },
@@ -34,19 +37,15 @@ export default function ConstructionGallery() {
     setCurrent((prev) => (prev - 1 + images.length) % images.length);
   }, []);
 
-  // Auto-advance every 4 seconds. Skips entirely under reduced-motion preference,
-  // and pauses on hover/focus, when the lightbox is open, or after explicit user pause.
+  // Auto-advance unless paused by hover/focus, an open lightbox, the user's
+  // explicit toggle, or the OS reduced-motion preference.
   useEffect(() => {
     if (prefersReducedMotion || userPaused || isPaused || lightboxOpen) return;
-    const interval = setInterval(next, 4000);
+    const interval = setInterval(next, AUTO_ADVANCE_MS);
     return () => clearInterval(interval);
   }, [prefersReducedMotion, userPaused, isPaused, lightboxOpen, next]);
 
-  // Reflect reduced-motion preference into the user-pause state once on mount
-  // so the pause/play button shows the correct initial label.
-  useEffect(() => {
-    if (prefersReducedMotion) setUserPaused(true);
-  }, [prefersReducedMotion]);
+  const effectivelyPaused = prefersReducedMotion || userPaused;
 
   return (
     <div className="bg-navy-50 py-16 lg:py-20 overflow-hidden">
@@ -58,13 +57,7 @@ export default function ConstructionGallery() {
           transition={{ duration: 0.6 }}
         >
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <div className="h-px w-12 bg-accent-500" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">
-                {t.project.constructionTag}
-              </span>
-              <div className="h-px w-12 bg-accent-500" />
-            </div>
+            <SectionEyebrow label={t.project.constructionTag} centered />
             <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
               {t.project.constructionTitle}
             </h2>
@@ -226,13 +219,14 @@ export default function ConstructionGallery() {
               <button
                 type="button"
                 onClick={() => setUserPaused((p) => !p)}
-                aria-pressed={userPaused}
+                disabled={!!prefersReducedMotion}
+                aria-pressed={effectivelyPaused}
                 aria-label={
-                  userPaused ? t.project.constructionPlay : t.project.constructionPause
+                  effectivelyPaused ? t.project.constructionPlay : t.project.constructionPause
                 }
-                className="absolute right-3 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
               >
-                {userPaused ? (
+                {effectivelyPaused ? (
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M8 5v14l11-7z" />
                   </svg>

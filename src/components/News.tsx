@@ -4,30 +4,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
-
-function FadeIn({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+import FadeIn from "./FadeIn";
+import SectionEyebrow from "./SectionEyebrow";
 
 const featuredArticles = [
   {
@@ -110,12 +88,7 @@ export default function News() {
     <section className="bg-gray-50 py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <FadeIn>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-12 bg-accent-500" />
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">
-              {t.news.tag}
-            </span>
-          </div>
+          <SectionEyebrow label={t.news.tag} />
           <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl lg:text-5xl">
             {t.news.title}{" "}
             <span className="text-accent-500">{t.news.titleAccent}</span>

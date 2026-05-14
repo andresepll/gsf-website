@@ -1,32 +1,8 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { useI18n } from "@/lib/i18n";
-
-function FadeIn({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+import FadeIn from "./FadeIn";
+import SectionEyebrow from "./SectionEyebrow";
 
 export default function Sustainability() {
   const { t } = useI18n();
@@ -60,12 +36,7 @@ export default function Sustainability() {
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 pt-16">
           <FadeIn>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-12 bg-accent-400" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-400">
-                {t.sustainability.tag}
-              </span>
-            </div>
+            <SectionEyebrow label={t.sustainability.tag} dark />
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
               {t.sustainability.title1}{" "}
               <span className="text-accent-400">{t.sustainability.titleAccent}</span>

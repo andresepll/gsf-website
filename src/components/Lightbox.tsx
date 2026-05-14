@@ -5,6 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
+// Swipe gesture thresholds for navigating between images on touch devices.
+// velocity * offset above the velocity threshold counts as a fling; raw
+// offset past the pixel threshold counts as a deliberate drag.
+const SWIPE_VELOCITY_THRESHOLD = 10000;
+const SWIPE_OFFSET_THRESHOLD = 100;
+
 export type LightboxImage = {
   src: string;
   alt: string;
@@ -110,8 +116,8 @@ export default function Lightbox({
     info: PanInfo
   ) => {
     const swipe = Math.abs(info.offset.x) * info.velocity.x;
-    if (swipe < -10000 || info.offset.x < -100) onNext();
-    else if (swipe > 10000 || info.offset.x > 100) onPrev();
+    if (swipe < -SWIPE_VELOCITY_THRESHOLD || info.offset.x < -SWIPE_OFFSET_THRESHOLD) onNext();
+    else if (swipe > SWIPE_VELOCITY_THRESHOLD || info.offset.x > SWIPE_OFFSET_THRESHOLD) onPrev();
   };
 
   if (!mounted) return null;

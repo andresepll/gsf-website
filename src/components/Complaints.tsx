@@ -1,34 +1,21 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
+import FadeIn from "./FadeIn";
+import SectionEyebrow from "./SectionEyebrow";
 
 export default function Complaints() {
   const { t } = useI18n();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <section className="bg-white py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-white border border-navy-100 px-6 py-10 sm:px-10 lg:px-14 lg:py-14"
-        >
+        <FadeIn className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-white border border-navy-100 px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
           <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-accent-500/10 blur-3xl" />
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-3 mb-3">
-                <div className="h-px w-12 bg-accent-500" />
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">
-                  {t.complaintsSection.tag}
-                </span>
-              </div>
+              <SectionEyebrow label={t.complaintsSection.tag} className="mb-3" />
               <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
                 {t.complaintsSection.title}
               </h2>
@@ -56,7 +43,7 @@ export default function Complaints() {
               </svg>
             </Link>
           </div>
-        </motion.div>
+        </FadeIn>
       </div>
     </section>
   );

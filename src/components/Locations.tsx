@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { useI18n } from "@/lib/i18n";
+import SectionEyebrow from "./SectionEyebrow";
 
 const locations = [
   {
@@ -37,13 +38,7 @@ export default function Locations() {
           transition={{ duration: 0.6 }}
         >
           <div className="mb-10">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <div className="h-px w-12 bg-accent-500" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-600">
-                {t.locations.tag}
-              </span>
-              <div className="h-px w-12 bg-accent-500" />
-            </div>
+            <SectionEyebrow label={t.locations.tag} centered />
             <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
               {t.locations.title}
             </h2>
