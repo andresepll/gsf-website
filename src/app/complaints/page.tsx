@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
+import TurnstileWidget from "@/components/TurnstileWidget";
+
+type ErrorKind = "generic" | "captcha" | "rateLimit";
 
 type FormData = {
   type: string;
@@ -42,7 +45,19 @@ export default function ComplaintsPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [errorKind, setErrorKind] = useState<ErrorKind | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [widgetKey, setWidgetKey] = useState(0);
+
+  const handleTurnstileVerify = useCallback((token: string) => {
+    setTurnstileToken(token);
+  }, []);
+  const handleTurnstileExpire = useCallback(() => {
+    setTurnstileToken(null);
+  }, []);
+  const handleTurnstileError = useCallback(() => {
+    setTurnstileToken(null);
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -60,24 +75,36 @@ export default function ComplaintsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
+    if (!turnstileToken) {
+      setErrorKind("captcha");
+      return;
+    }
     setSubmitting(true);
-    setError(null);
+    setErrorKind(null);
     try {
       const res = await fetch("/api/complaints", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, locale }),
+        body: JSON.stringify({ ...form, locale, turnstileToken }),
       });
-      const json = await res.json();
-      if (!res.ok || !json.ok) {
-        setError(json.error ?? "Request failed");
+      const json = await res.json().catch(() => null);
+      if (!res.ok || !json?.ok) {
+        if (res.status === 429 || json?.error === "rate-limited") {
+          setErrorKind("rateLimit");
+        } else if (json?.error === "captcha-failed") {
+          setErrorKind("captcha");
+          setTurnstileToken(null);
+          setWidgetKey((k) => k + 1);
+        } else {
+          setErrorKind("generic");
+        }
         return;
       }
       setReferenceId(json.referenceId);
       setSubmitted(true);
     } catch (err) {
       console.error("Form submission failed:", err);
-      setError("Network error");
+      setErrorKind("generic");
     } finally {
       setSubmitting(false);
     }
@@ -87,7 +114,9 @@ export default function ComplaintsPage() {
     setForm(initialForm);
     setSubmitted(false);
     setReferenceId(null);
-    setError(null);
+    setErrorKind(null);
+    setTurnstileToken(null);
+    setWidgetKey((k) => k + 1);
   };
 
   const typeOptions = [
@@ -277,16 +306,38 @@ export default function ComplaintsPage() {
               <textarea id="description" name="description" value={form.description} onChange={handleChange} required aria-required="true" rows={6} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all resize-none" placeholder={t.complaints.descPlaceholder} />
             </div>
 
-            {error && (
+            {/* Captcha */}
+            <div>
+              <span className="sr-only">{t.complaints.captchaLabel}</span>
+              <TurnstileWidget
+                key={widgetKey}
+                onVerify={handleTurnstileVerify}
+                onExpire={handleTurnstileExpire}
+                onError={handleTurnstileError}
+                locale={locale}
+              />
+            </div>
+
+            {errorKind && (
               <div
                 role="alert"
                 aria-live="assertive"
                 className="rounded-xl border border-red-200 bg-red-50 p-4"
               >
                 <div className="text-sm font-semibold text-red-900">
-                  {t.complaints.errorTitle}
+                  {errorKind === "captcha"
+                    ? t.complaints.errorCaptchaTitle
+                    : errorKind === "rateLimit"
+                    ? t.complaints.errorRateLimitTitle
+                    : t.complaints.errorTitle}
                 </div>
-                <p className="mt-1 text-sm text-red-700">{t.complaints.errorDesc}</p>
+                <p className="mt-1 text-sm text-red-700">
+                  {errorKind === "captcha"
+                    ? t.complaints.errorCaptchaDesc
+                    : errorKind === "rateLimit"
+                    ? t.complaints.errorRateLimitDesc
+                    : t.complaints.errorDesc}
+                </p>
               </div>
             )}
 
