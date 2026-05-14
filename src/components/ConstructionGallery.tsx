@@ -66,9 +66,30 @@ export default function ConstructionGallery() {
 
           {/* Slideshow */}
           <div
-            className="relative rounded-2xl overflow-hidden bg-navy-900 shadow-xl"
+            className="relative rounded-2xl overflow-hidden bg-navy-900 shadow-xl focus-within:ring-2 focus-within:ring-accent-500 focus-within:ring-offset-2"
+            role="region"
+            aria-label={t.project.constructionTitle}
+            aria-roledescription="carousel"
+            tabIndex={0}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
+            onFocus={() => setIsPaused(true)}
+            onBlur={() => setIsPaused(false)}
+            onKeyDown={(e) => {
+              if (lightboxOpen) return;
+              if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                prev();
+              } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                next();
+              } else if (e.key === "Enter" || e.key === " ") {
+                if ((e.target as HTMLElement).tagName !== "BUTTON") {
+                  e.preventDefault();
+                  setLightboxOpen(true);
+                }
+              }
+            }}
           >
             {/* Main Image */}
             <div className="group relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-[2.5/1]">
