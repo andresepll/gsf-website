@@ -1,6 +1,15 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  ReactNode,
+} from "react";
+
+const STORAGE_KEY = "gsf-locale";
 
 export type Locale = "en" | "es";
 
@@ -412,7 +421,38 @@ const I18nContext = createContext<I18nContextType>({
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("es");
+  const [hydrated, setHydrated] = useState(false);
   const t = translations[locale];
+
+  // On mount: detect saved preference, or fall back to browser language
+  useEffect(() => {
+    let detected: Locale = "es";
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === "en" || saved === "es") {
+        detected = saved;
+      } else {
+        const browserLang = navigator.language?.toLowerCase();
+        if (browserLang?.startsWith("en")) detected = "en";
+      }
+    } catch {
+      // localStorage may be unavailable (private mode, blocked storage)
+    }
+    setLocale(detected);
+    setHydrated(true);
+  }, []);
+
+  // Persist locale and keep <html lang> in sync for SEO + screen readers.
+  // Skip until hydrated so we don't clobber a saved preference with the default.
+  useEffect(() => {
+    if (!hydrated) return;
+    document.documentElement.lang = locale;
+    try {
+      localStorage.setItem(STORAGE_KEY, locale);
+    } catch {
+      // ignore
+    }
+  }, [locale, hydrated]);
 
   const handleSetLocale = useCallback((newLocale: Locale) => {
     setLocale(newLocale);
