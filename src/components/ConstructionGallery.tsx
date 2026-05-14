@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
@@ -20,8 +20,10 @@ export default function ConstructionGallery() {
   const { t } = useI18n();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const prefersReducedMotion = useReducedMotion();
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const next = useCallback(() => {
@@ -32,12 +34,19 @@ export default function ConstructionGallery() {
     setCurrent((prev) => (prev - 1 + images.length) % images.length);
   }, []);
 
-  // Auto-advance every 4 seconds (pause when hovered or lightbox open)
+  // Auto-advance every 4 seconds. Skips entirely under reduced-motion preference,
+  // and pauses on hover/focus, when the lightbox is open, or after explicit user pause.
   useEffect(() => {
-    if (isPaused || lightboxOpen) return;
+    if (prefersReducedMotion || userPaused || isPaused || lightboxOpen) return;
     const interval = setInterval(next, 4000);
     return () => clearInterval(interval);
-  }, [isPaused, lightboxOpen, next]);
+  }, [prefersReducedMotion, userPaused, isPaused, lightboxOpen, next]);
+
+  // Reflect reduced-motion preference into the user-pause state once on mount
+  // so the pause/play button shows the correct initial label.
+  useEffect(() => {
+    if (prefersReducedMotion) setUserPaused(true);
+  }, [prefersReducedMotion]);
 
   return (
     <div className="bg-navy-50 py-16 lg:py-20 overflow-hidden">
@@ -185,8 +194,8 @@ export default function ConstructionGallery() {
               </button>
             </div>
 
-            {/* Progress Dots */}
-            <div className="flex items-center justify-center gap-2 py-4 bg-navy-950">
+            {/* Progress Dots + Pause/Play */}
+            <div className="relative flex items-center justify-center gap-2 py-4 bg-navy-950">
               {images.map((_, i) => (
                 <button
                   key={i}
@@ -199,6 +208,25 @@ export default function ConstructionGallery() {
                   aria-label={`Go to image ${i + 1}`}
                 />
               ))}
+              <button
+                type="button"
+                onClick={() => setUserPaused((p) => !p)}
+                aria-pressed={userPaused}
+                aria-label={
+                  userPaused ? t.project.constructionPlay : t.project.constructionPause
+                }
+                className="absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                {userPaused ? (
+                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                ) : (
+                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 5h4v14H6zm8 0h4v14h-4z" />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
         </motion.div>

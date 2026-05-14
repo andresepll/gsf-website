@@ -91,6 +91,8 @@ const en = {
       "Aerial views of the GSF-1 construction site showing the latest progress.",
     constructionDate: "March 2, 2026",
     constructionZoomHint: "Click to enlarge",
+    constructionPause: "Pause slideshow",
+    constructionPlay: "Play slideshow",
     impactTag: "Impact",
     impactTitle: "Strategic infrastructure for sustainable development",
     impactSubtitle:
@@ -290,6 +292,8 @@ const es: Translations = {
       "Vistas aéreas del sitio de construcción de GSF-1 mostrando el avance más reciente.",
     constructionDate: "2 de marzo de 2026",
     constructionZoomHint: "Click para ampliar",
+    constructionPause: "Pausar presentación",
+    constructionPlay: "Reanudar presentación",
     impactTag: "Impacto",
     impactTitle:
       "Infraestructura estratégica para el desarrollo sostenible",

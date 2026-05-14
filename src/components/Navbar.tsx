@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,21 +9,62 @@ import { useI18n } from "@/lib/i18n";
 export default function Navbar() {
   const { locale, setLocale, t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
     { href: "#project", label: t.nav.project },
     { href: "#sustainability", label: t.nav.sustainability },
   ];
 
+  // Body scroll lock + focus management while menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      // Move focus into the menu after the open animation has had a moment
+      const t = setTimeout(() => {
+        menuRef.current
+          ?.querySelector<HTMLElement>('a, button')
+          ?.focus();
+      }, 50);
+      return () => {
+        clearTimeout(t);
+        document.body.style.overflow = "";
+      };
     }
-    return () => {
-      document.body.style.overflow = "";
+    // On close: restore focus to hamburger and unlock scroll
+    document.body.style.overflow = "";
+    hamburgerRef.current?.focus();
+  }, [mobileOpen]);
+
+  // Tab trap + Escape to close while the menu is open
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        return;
+      }
+      if (e.key === "Tab" && menuRef.current) {
+        const focusables = Array.from(
+          menuRef.current.querySelectorAll<HTMLElement>(
+            'a, button:not([disabled])'
+          )
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, [mobileOpen]);
 
   const toggleLocale = () => {
@@ -77,6 +118,7 @@ export default function Navbar() {
           </div>
 
           <button
+            ref={hamburgerRef}
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden relative z-50 h-10 w-10 flex items-center justify-center"
             aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
@@ -111,6 +153,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            ref={menuRef}
             id="mobile-menu"
             role="dialog"
             aria-modal="true"

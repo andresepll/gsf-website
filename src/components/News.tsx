@@ -146,7 +146,7 @@ export default function News() {
                 </div>
                 <div className="flex flex-col p-6 lg:p-8">
                   <div className="flex items-center gap-2 text-xs font-medium text-navy-500">
-                    <span className="rounded-full bg-accent-50 px-3 py-1 text-accent-600 font-semibold">
+                    <span className="rounded-full bg-accent-50 px-3 py-1 text-accent-700 font-semibold">
                       {article.source}
                     </span>
                     <span>•</span>
