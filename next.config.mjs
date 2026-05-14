@@ -3,6 +3,8 @@
 // Cloudflare Turnstile widget loads scripts from and iframes
 // challenges.cloudflare.com — see src/components/TurnstileWidget.tsx.
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
+// Google Maps embed iframes in src/components/Locations.tsx.
+const GOOGLE_MAPS_ORIGIN = "https://www.google.com";
 
 // Next.js dev mode uses eval-source-map, which requires 'unsafe-eval' in CSP.
 // Production bundles do not eval, so the production CSP stays strict.
@@ -24,7 +26,7 @@ const csp = [
   "font-src 'self' data:",
   `connect-src 'self' ${TURNSTILE_ORIGIN}`,
   "media-src 'self'",
-  `frame-src ${TURNSTILE_ORIGIN}`,
+  `frame-src ${TURNSTILE_ORIGIN} ${GOOGLE_MAPS_ORIGIN}`,
   "frame-ancestors 'none'",
   "form-action 'self'",
   "base-uri 'self'",
