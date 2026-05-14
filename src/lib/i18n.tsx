@@ -142,10 +142,12 @@ const en = {
     report2: "Climate Change Assessment",
     report3: "Human Rights Evaluation",
     report4: "GHG Emissions Report",
-    complaintsTitle: "Complaints & Grievance Mechanism",
-    complaintsDesc:
-      "We maintain a transparent and accessible channel for all complaints, grievances, and reports.",
-    complaintsBtn: "Submit a Report",
+  },
+  complaintsSection: {
+    tag: "Transparency",
+    title: "Complaints & Grievance Channel",
+    desc: "We maintain a transparent and accessible channel for all complaints, grievances, and reports related to our operations.",
+    btn: "Submit a Report",
   },
   news: {
     tag: "In the News",
@@ -340,10 +342,12 @@ const es: Translations = {
     report2: "Evaluación de Cambio Climático",
     report3: "Evaluación de Derechos Humanos",
     report4: "Reporte de Emisiones GEI",
-    complaintsTitle: "Canal de Quejas y Denuncias",
-    complaintsDesc:
-      "Mantenemos un canal transparente y accesible para todas las quejas, reclamos y denuncias.",
-    complaintsBtn: "Enviar un Reporte",
+  },
+  complaintsSection: {
+    tag: "Transparencia",
+    title: "Canal de Quejas y Denuncias",
+    desc: "Mantenemos un canal transparente y accesible para todas las quejas, reclamos y denuncias relacionadas con nuestras operaciones.",
+    btn: "Enviar un Reporte",
   },
   news: {
     tag: "En los Medios",

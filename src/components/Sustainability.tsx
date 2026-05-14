@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 
 function FadeIn({
@@ -159,21 +158,6 @@ export default function Sustainability() {
             </div>
           </FadeIn>
 
-          {/* Grievance Mechanism Link */}
-          <FadeIn delay={0.4}>
-            <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-6">
-              <div className="flex-1">
-                <h4 className="text-sm font-semibold text-white">{t.sustainability.complaintsTitle}</h4>
-                <p className="mt-1 text-sm text-navy-400">{t.sustainability.complaintsDesc}</p>
-              </div>
-              <Link href="/complaints" className="inline-flex items-center gap-2 rounded-full bg-white/10 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-white/15">
-                {t.sustainability.complaintsBtn}
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                </svg>
-              </Link>
-            </div>
-          </FadeIn>
         </div>
       </div>
     </section>
