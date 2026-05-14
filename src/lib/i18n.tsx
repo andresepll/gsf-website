@@ -194,6 +194,7 @@ const en = {
     sponsoredBy: "Sponsored by",
     followUs: "Follow us",
     instagramLabel: "Generadora San Felipe on Instagram",
+    linkedinLabel: "Generadora San Felipe on LinkedIn",
   },
   complaints: {
     back: "Back to Home",
@@ -419,6 +420,7 @@ const es: Translations = {
     sponsoredBy: "Patrocinado por",
     followUs: "Síguenos",
     instagramLabel: "Generadora San Felipe en Instagram",
+    linkedinLabel: "Generadora San Felipe en LinkedIn",
   },
   complaints: {
     back: "Volver al Inicio",
