@@ -145,7 +145,7 @@ export default function News() {
                   <div className="absolute inset-0 bg-gradient-to-t from-navy-950/30 to-transparent" />
                 </div>
                 <div className="flex flex-col p-6 lg:p-8">
-                  <div className="flex items-center gap-2 text-xs font-medium text-navy-400">
+                  <div className="flex items-center gap-2 text-xs font-medium text-navy-500">
                     <span className="rounded-full bg-accent-50 px-3 py-1 text-accent-600 font-semibold">
                       {article.source}
                     </span>
@@ -208,7 +208,7 @@ export default function News() {
                 </div>
               </div>
               <div className="p-5">
-                <div className="text-xs font-medium text-navy-400">
+                <div className="text-xs font-medium text-navy-500">
                   {locale === "es" ? article.dateEs : article.date}
                 </div>
                 <h3 className="mt-2 text-sm font-semibold text-navy-900 leading-snug line-clamp-3 group-hover:text-accent-600 transition-colors">

@@ -29,7 +29,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-400 mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.navTitle}
             </h4>
             <ul className="space-y-3">
@@ -51,7 +51,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-400 mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.resourcesTitle}
             </h4>
             <ul className="space-y-3">
@@ -70,7 +70,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-400 mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.contactTitle}
             </h4>
             <ul className="space-y-3 text-sm text-navy-600">
@@ -107,7 +107,7 @@ export default function Footer() {
           <div className="flex flex-wrap items-start gap-12">
             {/* Nexgen Capital */}
             <div className="flex flex-col items-start gap-2">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-400">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-navy-500">
                 Sponsor
               </span>
               <Image
@@ -122,7 +122,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-navy-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-navy-400">
+          <p className="text-xs text-navy-500">
             &copy; {new Date().getFullYear()} Generadora San Felipe Limited
             Partnership. {t.footer.copyright}
           </p>

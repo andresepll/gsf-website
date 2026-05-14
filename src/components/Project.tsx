@@ -118,7 +118,7 @@ export default function Project() {
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl lg:text-5xl">
               {t.project.title1}{" "}
-              <span className="text-navy-400">{t.project.title2}</span>
+              <span className="text-navy-500">{t.project.title2}</span>
             </h2>
             <p className="mt-4 max-w-2xl text-lg text-navy-500 leading-relaxed">
               {t.project.subtitle}
@@ -133,11 +133,11 @@ export default function Project() {
                   <Image src="/images/turbine-detail.png" alt="GE Vernova 7HA.02 Combustor Technology" width={600} height={400} className="w-full h-auto" />
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-white/80 backdrop-blur-sm px-4 py-3">
                     <div>
-                      <div className="text-xs text-navy-400">Technology</div>
+                      <div className="text-xs text-navy-500">Technology</div>
                       <div className="text-sm font-semibold text-navy-900">7HA.02 Combustor</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-xs text-navy-400">Class</div>
+                      <div className="text-xs text-navy-500">Class</div>
                       <div className="text-sm font-semibold text-navy-900">HA-Class</div>
                     </div>
                   </div>
@@ -149,7 +149,7 @@ export default function Project() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {specs.map((spec) => (
                   <div key={spec.label} className="group rounded-xl border border-navy-100 bg-white p-5 transition-all duration-300 hover:border-accent-200 hover:shadow-lg hover:shadow-accent-500/5">
-                    <div className="text-xs font-medium uppercase tracking-wider text-navy-400 mb-1">{spec.label}</div>
+                    <div className="text-xs font-medium uppercase tracking-wider text-navy-500 mb-1">{spec.label}</div>
                     <div className="text-sm font-semibold text-navy-900">{spec.value}</div>
                   </div>
                 ))}
@@ -198,7 +198,7 @@ export default function Project() {
                   <div className="rounded-lg bg-white px-5 py-4 shadow-sm border border-navy-100 hover:shadow-md transition-shadow">
                     <div className="inline-flex items-center gap-2 mb-1.5">
                       <span className="text-xs font-bold text-accent-600">{item.year}</span>
-                      <span className="text-[11px] text-navy-400">{item.quarter}</span>
+                      <span className="text-[11px] text-navy-500">{item.quarter}</span>
                     </div>
                     <h3 className="text-sm font-semibold text-navy-900 leading-snug">{item.title}</h3>
                     <p className="mt-1 text-xs text-navy-500 leading-relaxed">{item.description}</p>

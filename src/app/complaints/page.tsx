@@ -165,16 +165,16 @@ export default function ComplaintsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.nameLabel}</label>
-                    <input type="text" id="name" name="name" value={form.name} onChange={handleChange} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-300 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.namePlaceholder} />
+                    <input type="text" id="name" name="name" value={form.name} onChange={handleChange} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.namePlaceholder} />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.emailLabel}</label>
-                    <input type="email" id="email" name="email" value={form.email} onChange={handleChange} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-300 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.emailPlaceholder} />
+                    <input type="email" id="email" name="email" value={form.email} onChange={handleChange} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.emailPlaceholder} />
                   </div>
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.phoneLabel}</label>
-                  <input type="tel" id="phone" name="phone" value={form.phone} onChange={handleChange} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-300 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.phonePlaceholder} />
+                  <input type="tel" id="phone" name="phone" value={form.phone} onChange={handleChange} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.phonePlaceholder} />
                 </div>
               </motion.div>
             )}
@@ -182,13 +182,13 @@ export default function ComplaintsPage() {
             {/* Subject */}
             <div>
               <label htmlFor="subject" className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.subjectLabel}</label>
-              <input type="text" id="subject" name="subject" value={form.subject} onChange={handleChange} required className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-300 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.subjectPlaceholder} />
+              <input type="text" id="subject" name="subject" value={form.subject} onChange={handleChange} required className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all" placeholder={t.complaints.subjectPlaceholder} />
             </div>
 
             {/* Description */}
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-navy-900 mb-2">{t.complaints.descLabel}</label>
-              <textarea id="description" name="description" value={form.description} onChange={handleChange} required rows={6} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-300 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all resize-none" placeholder={t.complaints.descPlaceholder} />
+              <textarea id="description" name="description" value={form.description} onChange={handleChange} required rows={6} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all resize-none" placeholder={t.complaints.descPlaceholder} />
             </div>
 
             {/* Submit */}
