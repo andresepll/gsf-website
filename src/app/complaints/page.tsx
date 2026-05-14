@@ -26,9 +26,12 @@ const initialForm: FormData = {
 };
 
 export default function ComplaintsPage() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [form, setForm] = useState<FormData>(initialForm);
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [referenceId, setReferenceId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -43,9 +46,37 @@ export default function ComplaintsPage() {
     setForm((prev) => ({ ...prev, [target.name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (submitting) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/complaints", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, locale }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) {
+        setError(json.error ?? "Request failed");
+        return;
+      }
+      setReferenceId(json.referenceId);
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Form submission failed:", err);
+      setError("Network error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const reset = () => {
+    setForm(initialForm);
+    setSubmitted(false);
+    setReferenceId(null);
+    setError(null);
   };
 
   const typeOptions = [
@@ -106,12 +137,27 @@ export default function ComplaintsPage() {
             </div>
             <h2 className="text-2xl font-bold text-navy-900">{t.complaints.successTitle}</h2>
             <p className="mt-3 text-navy-500 max-w-md mx-auto">{t.complaints.successDesc}</p>
+
+            {referenceId && (
+              <div className="mt-8 mx-auto max-w-md rounded-2xl bg-navy-50 border border-navy-100 p-6">
+                <div className="text-xs font-semibold uppercase tracking-[0.15em] text-accent-700">
+                  {t.complaints.referenceLabel}
+                </div>
+                <div className="mt-2 text-2xl font-bold text-navy-900 font-mono tracking-tight">
+                  {referenceId}
+                </div>
+                <p className="mt-3 text-xs text-navy-500">
+                  {t.complaints.referenceNote}
+                </p>
+              </div>
+            )}
+
             <div className="mt-8 flex justify-center gap-4">
               <Link href="/" className="rounded-full bg-navy-950 px-6 py-2.5 text-sm font-semibold text-white hover:bg-navy-800 transition-colors">
                 {t.complaints.returnHome}
               </Link>
               <button
-                onClick={() => { setForm(initialForm); setSubmitted(false); }}
+                onClick={reset}
                 className="rounded-full border border-navy-200 px-6 py-2.5 text-sm font-semibold text-navy-700 hover:bg-navy-50 transition-colors"
               >
                 {t.complaints.submitAnother}
@@ -206,10 +252,39 @@ export default function ComplaintsPage() {
               <textarea id="description" name="description" value={form.description} onChange={handleChange} required aria-required="true" rows={6} className="w-full rounded-xl border border-navy-200 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20 focus:outline-none transition-all resize-none" placeholder={t.complaints.descPlaceholder} />
             </div>
 
+            {error && (
+              <div
+                role="alert"
+                aria-live="assertive"
+                className="rounded-xl border border-red-200 bg-red-50 p-4"
+              >
+                <div className="text-sm font-semibold text-red-900">
+                  {t.complaints.errorTitle}
+                </div>
+                <p className="mt-1 text-sm text-red-700">{t.complaints.errorDesc}</p>
+              </div>
+            )}
+
             {/* Submit */}
             <div className="flex items-center gap-4 pt-4">
-              <button type="submit" className="rounded-full bg-navy-950 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-navy-800 hover:shadow-lg">
-                {t.complaints.submit}
+              <button
+                type="submit"
+                disabled={submitting}
+                aria-busy={submitting}
+                className="inline-flex items-center gap-2 rounded-full bg-navy-950 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-navy-800 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-navy-950 disabled:hover:shadow-none"
+              >
+                {submitting && (
+                  <svg
+                    aria-hidden="true"
+                    className="h-4 w-4 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z" />
+                  </svg>
+                )}
+                {submitting ? t.complaints.submitting : t.complaints.submit}
               </button>
               <Link href="/" className="text-sm font-medium text-navy-500 hover:text-navy-700 transition-colors">
                 {t.complaints.cancel}
