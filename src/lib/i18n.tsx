@@ -79,6 +79,7 @@ const en = {
     constructionSubtitle:
       "Aerial views of the GSF-1 construction site showing the latest progress.",
     constructionDate: "March 2, 2026",
+    constructionZoomHint: "Click to enlarge",
     impactTag: "Impact",
     impactTitle: "Strategic infrastructure for sustainable development",
     impactSubtitle:
@@ -191,6 +192,12 @@ const en = {
     returnHome: "Return Home",
     submitAnother: "Submit Another",
   },
+  lightbox: {
+    close: "Close",
+    previous: "Previous image",
+    next: "Next image",
+    dialogLabel: "Enlarged image",
+  },
 };
 
 const es: Translations = {
@@ -267,6 +274,7 @@ const es: Translations = {
     constructionSubtitle:
       "Vistas aéreas del sitio de construcción de GSF-1 mostrando el avance más reciente.",
     constructionDate: "2 de marzo de 2026",
+    constructionZoomHint: "Click para ampliar",
     impactTag: "Impacto",
     impactTitle:
       "Infraestructura estratégica para el desarrollo sostenible",
@@ -379,6 +387,12 @@ const es: Translations = {
       "Gracias por su envío. Nuestro equipo revisará su reporte y responderá según nuestros procedimientos de gestión de quejas.",
     returnHome: "Volver al Inicio",
     submitAnother: "Enviar Otro",
+  },
+  lightbox: {
+    close: "Cerrar",
+    previous: "Imagen anterior",
+    next: "Imagen siguiente",
+    dialogLabel: "Imagen ampliada",
   },
 };
 

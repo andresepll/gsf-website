@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
+import Lightbox from "./Lightbox";
 
 const images = [
   { src: "/images/construction-1.jpg", alt: "Construction progress — aerial view 1" },
@@ -21,6 +22,7 @@ export default function ConstructionGallery() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % images.length);
@@ -30,12 +32,12 @@ export default function ConstructionGallery() {
     setCurrent((prev) => (prev - 1 + images.length) % images.length);
   }, []);
 
-  // Auto-advance every 4 seconds
+  // Auto-advance every 4 seconds (pause when hovered or lightbox open)
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || lightboxOpen) return;
     const interval = setInterval(next, 4000);
     return () => clearInterval(interval);
-  }, [isPaused, next]);
+  }, [isPaused, lightboxOpen, next]);
 
   return (
     <div className="bg-navy-50 py-16 lg:py-20 overflow-hidden">
@@ -69,7 +71,7 @@ export default function ConstructionGallery() {
             onMouseLeave={() => setIsPaused(false)}
           >
             {/* Main Image */}
-            <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-[2.5/1]">
+            <div className="group relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-[2.5/1]">
               <Image
                 src={images[current].src}
                 alt={images[current].alt}
@@ -79,11 +81,41 @@ export default function ConstructionGallery() {
                 priority={current === 0}
               />
 
+              {/* Click-to-open overlay (sits behind nav controls) */}
+              <button
+                type="button"
+                onClick={() => setLightboxOpen(true)}
+                className="absolute inset-0 z-0 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-inset"
+                aria-label={t.project.constructionZoomHint}
+              />
+
               {/* Gradient overlay at bottom */}
-              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+
+              {/* Zoom hint — appears on hover */}
+              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/15 px-3 py-1.5">
+                  <svg
+                    className="h-4 w-4 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
+                    />
+                  </svg>
+                  <span className="text-xs font-medium text-white">
+                    {t.project.constructionZoomHint}
+                  </span>
+                </div>
+              </div>
 
               {/* Date badge */}
-              <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+              <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 pointer-events-none">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-2">
                   <svg
                     className="h-4 w-4 text-accent-400"
@@ -105,7 +137,7 @@ export default function ConstructionGallery() {
               </div>
 
               {/* Counter */}
-              <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6">
+              <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 pointer-events-none">
                 <span className="text-sm font-mono text-white/70">
                   {String(current + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
                 </span>
@@ -114,8 +146,8 @@ export default function ConstructionGallery() {
               {/* Prev/Next Arrows */}
               <button
                 onClick={prev}
-                className="absolute left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
-                aria-label="Previous image"
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
+                aria-label={t.lightbox.previous}
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -123,8 +155,8 @@ export default function ConstructionGallery() {
               </button>
               <button
                 onClick={next}
-                className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
-                aria-label="Next image"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
+                aria-label={t.lightbox.next}
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -150,6 +182,17 @@ export default function ConstructionGallery() {
           </div>
         </motion.div>
       </div>
+
+      <Lightbox
+        open={lightboxOpen}
+        images={images}
+        index={current}
+        onClose={() => setLightboxOpen(false)}
+        onPrev={prev}
+        onNext={next}
+        caption={t.project.constructionDate}
+        labels={t.lightbox}
+      />
     </div>
   );
 }
