@@ -13,6 +13,7 @@ type FormData = {
   subject: string;
   description: string;
   anonymous: boolean;
+  website: string;
 };
 
 const initialForm: FormData = {
@@ -23,6 +24,16 @@ const initialForm: FormData = {
   subject: "",
   description: "",
   anonymous: false,
+  website: "",
+};
+
+const honeypotStyle: React.CSSProperties = {
+  position: "absolute",
+  left: "-9999px",
+  width: "1px",
+  height: "1px",
+  overflow: "hidden",
+  opacity: 0,
 };
 
 export default function ComplaintsPage() {
@@ -172,6 +183,20 @@ export default function ComplaintsPage() {
             onSubmit={handleSubmit}
             className="space-y-8"
           >
+            {/* Honeypot — visually hidden, ignored by humans, filled by bots */}
+            <div style={honeypotStyle} aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.website}
+                onChange={handleChange}
+              />
+            </div>
+
             <p className="text-xs text-navy-500">
               {t.form.requiredHint}
             </p>

@@ -121,6 +121,29 @@ const TYPE_LABEL_ES: Record<ComplaintType, string> = {
 };
 
 export async function POST(req: NextRequest) {
+  let raw: unknown;
+  try {
+    raw = await req.json();
+  } catch {
+    return NextResponse.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
+  }
+
+  // Honeypot: bots populate the hidden "website" field; humans never see it.
+  // Silently return a success-looking response so the bot does not retry.
+  // Runs before env/validation so the response is consistent regardless of
+  // server state and never leaks anything to probing tools.
+  if (
+    raw &&
+    typeof raw === "object" &&
+    typeof (raw as Record<string, unknown>).website === "string" &&
+    ((raw as Record<string, unknown>).website as string).trim().length > 0
+  ) {
+    return NextResponse.json(
+      { ok: true, referenceId: generateReferenceId() },
+      { status: 201 }
+    );
+  }
+
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;
@@ -132,13 +155,6 @@ export async function POST(req: NextRequest) {
       { ok: false, error: "Server misconfigured" },
       { status: 500 }
     );
-  }
-
-  let raw: unknown;
-  try {
-    raw = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
   }
 
   const v = validate(raw);
