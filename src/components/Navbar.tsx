@@ -50,7 +50,6 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a
@@ -62,7 +61,6 @@ export default function Navbar() {
               </a>
             ))}
 
-            {/* Language Toggle */}
             <button
               onClick={toggleLocale}
               className="text-xs font-bold tracking-wider uppercase border border-navy-200 text-navy-600 rounded-full px-3 py-1 hover:bg-navy-50 transition-all duration-300"
@@ -78,7 +76,6 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile Hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden relative z-50 h-10 w-10 flex items-center justify-center"
@@ -111,7 +108,6 @@ export default function Navbar() {
         </nav>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
