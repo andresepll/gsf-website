@@ -192,6 +192,8 @@ const en = {
     contactTitle: "Contact",
     copyright: "All rights reserved.",
     sponsoredBy: "Sponsored by",
+    followUs: "Follow us",
+    instagramLabel: "Generadora San Felipe on Instagram",
   },
   complaints: {
     back: "Back to Home",
@@ -415,6 +417,8 @@ const es: Translations = {
     contactTitle: "Contacto",
     copyright: "Todos los derechos reservados.",
     sponsoredBy: "Patrocinado por",
+    followUs: "Síguenos",
+    instagramLabel: "Generadora San Felipe en Instagram",
   },
   complaints: {
     back: "Volver al Inicio",
