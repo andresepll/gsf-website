@@ -47,26 +47,31 @@ export default function Project() {
     { label: t.project.specEfficiency, value: t.project.specEfficiencyVal },
   ];
 
+  const now = new Date();
   const timeline = [
     {
+      date: "2024-04-30",
       year: t.project.tl1year,
       quarter: t.project.tl1quarter,
       title: t.project.tl1title,
       description: t.project.tl1desc,
     },
     {
+      date: "2025-12-31",
       year: t.project.tl2year,
       quarter: t.project.tl2quarter,
       title: t.project.tl2title,
       description: t.project.tl2desc,
     },
     {
+      date: "2026-11-30",
       year: t.project.tl3year,
       quarter: t.project.tl3quarter,
       title: t.project.tl3title,
       description: t.project.tl3desc,
     },
     {
+      date: "2027-05-31",
       year: t.project.tl4year,
       quarter: t.project.tl4quarter,
       title: t.project.tl4title,
@@ -191,21 +196,24 @@ export default function Project() {
 
           <div ref={timelineRef} className="mt-12 relative">
             <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-navy-200 md:-translate-x-px" />
-            {timeline.map((item, i) => (
-              <motion.div key={item.year} initial={{ opacity: 0, y: 20 }} animate={timelineInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay: i * 0.1 }} className={`relative flex items-start gap-6 mb-6 last:mb-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
-                <div className="absolute left-4 md:left-1/2 top-2 h-2.5 w-2.5 -translate-x-[5px] md:-translate-x-[5px] rounded-full bg-accent-500 ring-[3px] ring-navy-50 z-10" />
-                <div className={`ml-10 md:ml-0 md:w-[calc(50%-1.5rem)] ${i % 2 === 0 ? "md:pr-6 md:text-right" : "md:pl-6"}`}>
-                  <div className="rounded-lg bg-white px-5 py-4 shadow-sm border border-navy-100 hover:shadow-md transition-shadow">
-                    <div className="inline-flex items-center gap-2 mb-1.5">
-                      <span className="text-xs font-bold text-accent-600">{item.year}</span>
-                      <span className="text-[11px] text-navy-500">{item.quarter}</span>
+            {timeline.map((item, i) => {
+              const isCompleted = new Date(item.date) <= now;
+              return (
+                <motion.div key={item.year} initial={{ opacity: 0, y: 20 }} animate={timelineInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay: i * 0.1 }} className={`relative flex items-start gap-6 mb-6 last:mb-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+                  <div className={`absolute left-4 md:left-1/2 top-2 h-2.5 w-2.5 -translate-x-[5px] md:-translate-x-[5px] rounded-full ring-[3px] ring-navy-50 z-10 ${isCompleted ? "bg-accent-500" : "bg-amber-500"}`} />
+                  <div className={`ml-10 md:ml-0 md:w-[calc(50%-1.5rem)] ${i % 2 === 0 ? "md:pr-6 md:text-right" : "md:pl-6"}`}>
+                    <div className="rounded-lg bg-white px-5 py-4 shadow-sm border border-navy-100 hover:shadow-md transition-shadow">
+                      <div className="inline-flex items-center gap-2 mb-1.5">
+                        <span className={`text-xs font-bold ${isCompleted ? "text-accent-600" : "text-amber-700"}`}>{item.year}</span>
+                        <span className="text-[11px] text-navy-500">{item.quarter}</span>
+                      </div>
+                      <h3 className="text-sm font-semibold text-navy-900 leading-snug">{item.title}</h3>
+                      <p className="mt-1 text-xs text-navy-500 leading-relaxed">{item.description}</p>
                     </div>
-                    <h3 className="text-sm font-semibold text-navy-900 leading-snug">{item.title}</h3>
-                    <p className="mt-1 text-xs text-navy-500 leading-relaxed">{item.description}</p>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
