@@ -184,6 +184,12 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Generadora San Felipe Limited
             Partnership. {t.footer.copyright}
           </p>
+          <Link
+            href="/privacy"
+            className="text-xs text-navy-500 hover:text-accent-600 transition-colors"
+          >
+            {t.footer.privacy}
+          </Link>
         </div>
       </div>
     </footer>

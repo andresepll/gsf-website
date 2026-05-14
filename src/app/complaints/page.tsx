@@ -341,6 +341,18 @@ export default function ComplaintsPage() {
               </div>
             )}
 
+            {/* Consent notice */}
+            <p className="text-xs text-navy-500 leading-relaxed">
+              {t.complaints.consentBefore}{" "}
+              <Link
+                href="/privacy"
+                className="underline hover:text-accent-600 transition-colors"
+              >
+                {t.complaints.consentLink}
+              </Link>
+              {t.complaints.consentAfter}
+            </p>
+
             {/* Submit */}
             <div className="flex items-center gap-4 pt-4">
               <button
