@@ -91,12 +91,12 @@ export default function Navbar() {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium tracking-wide text-navy-700 hover:text-accent-500 transition-colors duration-300"
+                className="inline-flex items-center min-h-[44px] px-2 text-sm font-medium tracking-wide text-navy-700 hover:text-accent-500 transition-colors duration-300"
               >
                 {link.label}
               </a>
@@ -104,14 +104,15 @@ export default function Navbar() {
 
             <button
               onClick={toggleLocale}
-              className="text-xs font-bold tracking-wider uppercase border border-navy-200 text-navy-600 rounded-full px-3 py-1 hover:bg-navy-50 transition-all duration-300"
+              aria-label={t.langToggleAriaLabel}
+              className="inline-flex items-center min-h-[44px] text-xs font-bold tracking-wider uppercase border border-navy-200 text-navy-600 rounded-full px-4 hover:bg-navy-50 transition-all duration-300"
             >
               {locale === "en" ? "ES" : "EN"}
             </button>
 
             <a
               href="#locations"
-              className="rounded-full bg-accent-500 px-5 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
+              className="inline-flex items-center min-h-[44px] rounded-full bg-accent-500 px-5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-lg hover:shadow-accent-500/25"
             >
               {t.nav.contact}
             </a>
@@ -120,7 +121,7 @@ export default function Navbar() {
           <button
             ref={hamburgerRef}
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden relative z-50 h-10 w-10 flex items-center justify-center"
+            className="md:hidden relative z-50 h-11 w-11 flex items-center justify-center"
             aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"

@@ -83,7 +83,7 @@ export default function Locations() {
                             : "bg-navy-100 text-navy-500"
                         }`}
                       >
-                        <svg
+                        <svg aria-hidden="true"
                           className="h-5 w-5"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -124,10 +124,10 @@ export default function Locations() {
                 href={loc.mapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium text-accent-600 hover:text-accent-700 transition-colors mt-2"
+                className="inline-flex items-center gap-2 min-h-[44px] text-sm font-medium text-accent-700 hover:text-accent-800 transition-colors mt-2"
               >
                 {t.locations.openMaps}
-                <svg
+                <svg aria-hidden="true"
                   className="h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"

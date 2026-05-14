@@ -74,7 +74,7 @@ export default function ComplaintsPage() {
               href="/"
               className="inline-flex items-center gap-2 text-sm text-navy-400 hover:text-white transition-colors mb-8"
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
               </svg>
               {t.complaints.back}
@@ -100,7 +100,7 @@ export default function ComplaintsPage() {
             className="text-center py-16"
           >
             <div className="mx-auto h-16 w-16 rounded-full bg-accent-50 flex items-center justify-center mb-6">
-              <svg className="h-8 w-8 text-accent-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg aria-hidden="true" className="h-8 w-8 text-accent-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
               </svg>
             </div>

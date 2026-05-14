@@ -125,7 +125,7 @@ export default function ConstructionGallery() {
               {/* Zoom hint — appears on hover */}
               <div className="absolute top-4 right-4 sm:top-6 sm:right-6 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/15 px-3 py-1.5">
-                  <svg
+                  <svg aria-hidden="true"
                     className="h-4 w-4 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -147,7 +147,7 @@ export default function ConstructionGallery() {
               {/* Date badge */}
               <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 pointer-events-none">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-2">
-                  <svg
+                  <svg aria-hidden="true"
                     className="h-4 w-4 text-accent-400"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -176,19 +176,19 @@ export default function ConstructionGallery() {
               {/* Prev/Next Arrows */}
               <button
                 onClick={prev}
-                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
                 aria-label={t.lightbox.previous}
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
               </button>
               <button
                 onClick={next}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-black/50 transition-colors"
                 aria-label={t.lightbox.next}
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
               </button>
@@ -200,13 +200,19 @@ export default function ConstructionGallery() {
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === current
-                      ? "w-8 bg-accent-500"
-                      : "w-1.5 bg-navy-600 hover:bg-navy-400"
-                  }`}
+                  className="group grid place-items-center min-h-[44px] min-w-[44px] -mx-2.5"
                   aria-label={`Go to image ${i + 1}`}
-                />
+                  aria-current={i === current ? "true" : undefined}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`block h-1.5 rounded-full transition-all duration-300 ${
+                      i === current
+                        ? "w-8 bg-accent-500"
+                        : "w-1.5 bg-navy-600 group-hover:bg-navy-400"
+                    }`}
+                  />
+                </button>
               ))}
               <button
                 type="button"
@@ -215,7 +221,7 @@ export default function ConstructionGallery() {
                 aria-label={
                   userPaused ? t.project.constructionPlay : t.project.constructionPause
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
               >
                 {userPaused ? (
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

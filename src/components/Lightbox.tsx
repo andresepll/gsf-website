@@ -143,7 +143,7 @@ export default function Lightbox({
             className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 h-11 w-11 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label={labels.close}
           >
-            <svg
+            <svg aria-hidden="true"
               className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
@@ -167,7 +167,7 @@ export default function Lightbox({
             className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label={labels.previous}
           >
-            <svg
+            <svg aria-hidden="true"
               className="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"
@@ -191,7 +191,7 @@ export default function Lightbox({
             className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label={labels.next}
           >
-            <svg
+            <svg aria-hidden="true"
               className="h-6 w-6"
               fill="none"
               viewBox="0 0 24 24"

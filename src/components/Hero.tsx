@@ -62,7 +62,7 @@ export default function Hero() {
                 className="group inline-flex items-center gap-2 rounded-full bg-accent-500 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-xl hover:shadow-accent-500/25"
               >
                 {t.hero.cta}
-                <svg
+                <svg aria-hidden="true"
                   className="h-4 w-4 transition-transform group-hover:translate-x-1"
                   fill="none"
                   viewBox="0 0 24 24"

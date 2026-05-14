@@ -16,6 +16,8 @@ export type Locale = "en" | "es";
 type Translations = typeof en;
 
 const en = {
+  skipToContent: "Skip to main content",
+  langToggleAriaLabel: "Switch to Spanish",
   nav: {
     project: "Project",
     sustainability: "Sustainability",
@@ -216,6 +218,8 @@ const en = {
 };
 
 const es: Translations = {
+  skipToContent: "Saltar al contenido principal",
+  langToggleAriaLabel: "Cambiar a inglés",
   nav: {
     project: "Proyecto",
     sustainability: "Sostenibilidad",

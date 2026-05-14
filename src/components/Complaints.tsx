@@ -41,7 +41,7 @@ export default function Complaints() {
               className="group inline-flex items-center justify-center gap-2 self-start rounded-full bg-navy-950 px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-navy-800 hover:shadow-lg lg:flex-shrink-0"
             >
               {t.complaintsSection.btn}
-              <svg
+              <svg aria-hidden="true"
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
                 fill="none"
                 viewBox="0 0 24 24"
