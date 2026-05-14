@@ -8,19 +8,12 @@ import { useI18n } from "@/lib/i18n";
 
 export default function Navbar() {
   const { locale, setLocale, t } = useI18n();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
     { href: "#project", label: t.nav.project },
     { href: "#sustainability", label: t.nav.sustainability },
   ];
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -43,34 +36,16 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-white/90 backdrop-blur-md shadow-sm"
-            : "bg-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md shadow-sm"
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-8">
           <Link href="/" className="relative h-[3.75rem] w-[210px]">
-            {/* Color logo for scrolled (white bg) */}
             <Image
               src="/images/logo-gsf-new.png"
               alt="Generadora San Felipe"
               width={200}
               height={60}
-              className={`absolute inset-0 h-[3.75rem] w-auto object-contain object-left transition-opacity duration-500 ${
-                scrolled ? "opacity-100" : "opacity-0"
-              }`}
-              priority
-            />
-            {/* White logo for hero (dark bg) */}
-            <Image
-              src="/images/logo-gsf-new.png"
-              alt="Generadora San Felipe"
-              width={200}
-              height={60}
-              className={`absolute inset-0 h-[3.75rem] w-auto object-contain object-left brightness-0 invert transition-opacity duration-500 ${
-                scrolled ? "opacity-0" : "opacity-100"
-              }`}
+              className="absolute inset-0 h-[3.75rem] w-auto object-contain object-left"
               priority
             />
           </Link>
@@ -81,9 +56,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium tracking-wide transition-colors duration-300 hover:text-accent-500 ${
-                  scrolled ? "text-navy-700" : "text-white/90"
-                }`}
+                className="text-sm font-medium tracking-wide text-navy-700 hover:text-accent-500 transition-colors duration-300"
               >
                 {link.label}
               </a>
@@ -92,11 +65,7 @@ export default function Navbar() {
             {/* Language Toggle */}
             <button
               onClick={toggleLocale}
-              className={`text-xs font-bold tracking-wider uppercase border rounded-full px-3 py-1 transition-all duration-300 ${
-                scrolled
-                  ? "border-navy-200 text-navy-600 hover:bg-navy-50"
-                  : "border-white/20 text-white/80 hover:bg-white/10"
-              }`}
+              className="text-xs font-bold tracking-wider uppercase border border-navy-200 text-navy-600 rounded-full px-3 py-1 hover:bg-navy-50 transition-all duration-300"
             >
               {locale === "en" ? "ES" : "EN"}
             </button>
@@ -120,27 +89,19 @@ export default function Navbar() {
                 className={`block h-0.5 w-6 transition-all duration-300 ${
                   mobileOpen
                     ? "rotate-45 translate-y-2 bg-white"
-                    : scrolled
-                    ? "bg-navy-900"
-                    : "bg-white"
+                    : "bg-navy-900"
                 }`}
               />
               <span
                 className={`block h-0.5 w-6 transition-all duration-300 ${
-                  mobileOpen
-                    ? "opacity-0"
-                    : scrolled
-                    ? "bg-navy-900"
-                    : "bg-white"
+                  mobileOpen ? "opacity-0" : "bg-navy-900"
                 }`}
               />
               <span
                 className={`block h-0.5 w-6 transition-all duration-300 ${
                   mobileOpen
                     ? "-rotate-45 -translate-y-2 bg-white"
-                    : scrolled
-                    ? "bg-navy-900"
-                    : "bg-white"
+                    : "bg-navy-900"
                 }`}
               />
             </div>
