@@ -215,10 +215,18 @@ const en = {
     descPlaceholder:
       "Please provide as much detail as possible about the complaint, grievance, or report.",
     submit: "Submit Report",
+    submitting: "Submitting…",
     cancel: "Cancel",
     successTitle: "Report Submitted",
     successDesc:
       "Thank you for your submission. Our team will review your report and respond according to our grievance management procedures.",
+    referenceLabel: "Reference code",
+    referenceNote:
+      "Save this code. You will need it to follow up on your report.",
+    errorTitle: "We could not submit your report",
+    errorDesc:
+      "Please try again in a moment. If the problem persists, contact us at contacto@gsf.com.do.",
+    errorRetry: "Try again",
     returnHome: "Return Home",
     submitAnother: "Submit Another",
   },
@@ -430,10 +438,18 @@ const es: Translations = {
     descPlaceholder:
       "Por favor proporcione el mayor detalle posible sobre la queja, reclamo o denuncia.",
     submit: "Enviar Reporte",
+    submitting: "Enviando…",
     cancel: "Cancelar",
     successTitle: "Reporte Enviado",
     successDesc:
       "Gracias por su envío. Nuestro equipo revisará su reporte y responderá según nuestros procedimientos de gestión de quejas.",
+    referenceLabel: "Código de referencia",
+    referenceNote:
+      "Guarde este código. Lo va a necesitar para hacer seguimiento de su reporte.",
+    errorTitle: "No pudimos enviar su reporte",
+    errorDesc:
+      "Por favor intente nuevamente en unos momentos. Si el problema persiste, escríbanos a contacto@gsf.com.do.",
+    errorRetry: "Reintentar",
     returnHome: "Volver al Inicio",
     submitAnother: "Enviar Otro",
   },
