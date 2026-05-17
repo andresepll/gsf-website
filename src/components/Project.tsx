@@ -108,7 +108,7 @@ export default function Project() {
               <div className="relative">
                 <div className="absolute -inset-4 rounded-2xl bg-navy-50/50 -rotate-2" />
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-navy-100 p-8 lg:p-12">
-                  <Image src="/images/turbine-detail.png" alt="GE Vernova 7HA.02 Combustor Technology" width={600} height={400} className="w-full h-auto" />
+                  <Image src="/images/turbine-profile.png" alt="GE Vernova 7HA.02 gas turbine — lateral profile" width={1200} height={425} className="w-full h-auto" />
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-white/80 backdrop-blur-sm px-4 py-3">
                     <div>
                       <div className="text-xs text-navy-500">Technology</div>
