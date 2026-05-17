@@ -20,7 +20,8 @@ export default function Project() {
     { label: t.project.specConfig, value: t.project.specConfigVal },
     { label: t.project.specGas, value: t.project.specGasVal },
     { label: t.project.specSteam, value: t.project.specSteamVal },
-    { label: t.project.specCapacity, value: t.project.specCapacityVal },
+    { label: t.project.specNet, value: t.project.specNetVal },
+    { label: t.project.specContract, value: t.project.specContractVal },
   ];
 
   const now = new Date();
@@ -120,7 +121,7 @@ export default function Project() {
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 {specs.map((spec) => (
                   <div key={spec.label} className="group rounded-xl border border-navy-100 bg-white p-5 transition-all duration-300 hover:border-accent-200 hover:shadow-lg hover:shadow-accent-500/5">
                     <div className="text-xs font-medium uppercase tracking-wider text-navy-500 mb-1">{spec.label}</div>
