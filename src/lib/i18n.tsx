@@ -310,15 +310,17 @@ const en = {
     thirdParties: {
       title: "6. Third parties that process your data",
       intro:
-        "We rely on the following trusted service providers (“data processors”) to operate the complaints channel. They are bound by contract to handle your data only on our behalf and under appropriate security measures.",
+        "To operate the complaints channel we rely on trusted technology service providers (“data processors”), each bound by contract to handle your data only on our behalf and under appropriate security measures. The categories are:",
       items: [
-        "Resend Inc. (United States) — sends the notification and acknowledgement emails",
-        "Supabase Inc. (United States) — hosts the database where reports are stored",
-        "Cloudflare Inc. (United States) — provides the bot-protection layer (Cloudflare Turnstile) and processes technical metadata from your browser",
-        "Vercel Inc. (United States) — hosts the website and retains brief operational access logs",
-        "Upstash Inc. (United States) — provides the rate-limiting layer that prevents abuse of the form",
-        "Microsoft Corporation — receives internal notification emails at our Outlook inbox",
+        "Transactional email provider (notification and acknowledgement messages) — United States",
+        "Database hosting provider where reports are stored — United States",
+        "Anti-bot protection and automated-traffic filtering provider — United States",
+        "Website hosting provider that retains brief operational access logs — United States",
+        "Rate-limiting provider that prevents abuse of the form — United States",
+        "Corporate email provider where internal notifications are received — United States",
       ],
+      howTo:
+        "A detailed list with the commercial names of each current provider is available upon request at contacto@gsf.com.do.",
     },
     internationalTransfers: {
       title: "7. International data transfers",
@@ -686,15 +688,17 @@ const es: Translations = {
     thirdParties: {
       title: "6. Terceros que tratan sus datos",
       intro:
-        "Para operar el canal de quejas y denuncias dependemos de los siguientes proveedores de confianza (“encargados del tratamiento”), quienes están contractualmente obligados a tratar sus datos únicamente por cuenta de GSF y bajo medidas de seguridad apropiadas.",
+        "Para operar el canal de quejas y denuncias dependemos de proveedores de servicios tecnológicos de confianza (“encargados del tratamiento”), cada uno contractualmente obligado a tratar sus datos únicamente por cuenta de GSF y bajo medidas de seguridad apropiadas. Las categorías son:",
       items: [
-        "Resend Inc. (Estados Unidos) — envía los correos de notificación y acuse",
-        "Supabase Inc. (Estados Unidos) — aloja la base de datos donde se almacenan los reportes",
-        "Cloudflare Inc. (Estados Unidos) — provee la capa de protección anti-bots (Cloudflare Turnstile) y procesa metadatos técnicos de su navegador",
-        "Vercel Inc. (Estados Unidos) — aloja el sitio web y retiene brevemente registros operativos de acceso",
-        "Upstash Inc. (Estados Unidos) — provee la capa de limitación de frecuencia que previene el abuso del formulario",
-        "Microsoft Corporation — recibe los correos internos de notificación en nuestro buzón Outlook",
+        "Proveedor de envío de correo transaccional (notificación y acuse) — Estados Unidos",
+        "Proveedor de hosting de base de datos donde se almacenan los reportes — Estados Unidos",
+        "Proveedor de protección anti-bots y filtrado de tráfico automatizado — Estados Unidos",
+        "Proveedor de hosting del sitio web que retiene brevemente registros operativos de acceso — Estados Unidos",
+        "Proveedor de limitación de frecuencia (rate limit) que previene el abuso del formulario — Estados Unidos",
+        "Proveedor de correo corporativo donde se reciben las notificaciones internas — Estados Unidos",
       ],
+      howTo:
+        "Una lista detallada con los nombres comerciales de cada proveedor actual está disponible mediante solicitud a contacto@gsf.com.do.",
     },
     internationalTransfers: {
       title: "7. Transferencias internacionales",
