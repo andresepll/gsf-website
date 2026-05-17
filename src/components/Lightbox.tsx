@@ -81,11 +81,11 @@ export default function Lightbox({
         onClose();
         return;
       }
-      if (e.key === "ArrowLeft") {
+      if (e.key === "ArrowLeft" && images.length > 1) {
         onPrev();
         return;
       }
-      if (e.key === "ArrowRight") {
+      if (e.key === "ArrowRight" && images.length > 1) {
         onNext();
         return;
       }
@@ -123,6 +123,7 @@ export default function Lightbox({
   if (!mounted) return null;
 
   const image = images[index];
+  const hasMultipleImages = images.length > 1;
 
   return createPortal(
     <AnimatePresence>
@@ -164,53 +165,56 @@ export default function Lightbox({
             </svg>
           </button>
 
-          {/* Previous */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onPrev();
-            }}
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
-            aria-label={labels.previous}
-          >
-            <svg aria-hidden="true"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 19.5L8.25 12l7.5-7.5"
-              />
-            </svg>
-          </button>
+          {/* Previous + Next nav (hidden when only one image) */}
+          {hasMultipleImages && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onPrev();
+                }}
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+                aria-label={labels.previous}
+              >
+                <svg aria-hidden="true"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 19.5L8.25 12l7.5-7.5"
+                  />
+                </svg>
+              </button>
 
-          {/* Next */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onNext();
-            }}
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
-            aria-label={labels.next}
-          >
-            <svg aria-hidden="true"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8.25 4.5l7.5 7.5-7.5 7.5"
-              />
-            </svg>
-          </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onNext();
+                }}
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+                aria-label={labels.next}
+              >
+                <svg aria-hidden="true"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </button>
+            </>
+          )}
 
           {/* Image */}
           <motion.div
@@ -219,11 +223,13 @@ export default function Lightbox({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            drag="x"
+            drag={hasMultipleImages ? "x" : false}
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
-            onDragEnd={handleDragEnd}
-            className="relative h-[80vh] w-[92vw] max-w-7xl cursor-grab active:cursor-grabbing"
+            onDragEnd={hasMultipleImages ? handleDragEnd : undefined}
+            className={`relative h-[80vh] w-[92vw] max-w-7xl ${
+              hasMultipleImages ? "cursor-grab active:cursor-grabbing" : ""
+            }`}
             onClick={(e) => e.stopPropagation()}
             style={{ touchAction: "pinch-zoom" }}
           >
@@ -238,16 +244,18 @@ export default function Lightbox({
             />
           </motion.div>
 
-          {/* Caption + counter */}
+          {/* Caption + counter (counter hidden when only one image) */}
           <div
             className="absolute bottom-4 sm:bottom-6 left-0 right-0 flex items-center justify-between px-4 sm:px-8 pointer-events-none"
             aria-live="polite"
           >
             <div className="text-sm text-white/80">{caption}</div>
-            <div className="text-sm font-mono text-white/70">
-              {String(index + 1).padStart(2, "0")} /{" "}
-              {String(images.length).padStart(2, "0")}
-            </div>
+            {hasMultipleImages && (
+              <div className="text-sm font-mono text-white/70">
+                {String(index + 1).padStart(2, "0")} /{" "}
+                {String(images.length).padStart(2, "0")}
+              </div>
+            )}
           </div>
         </motion.div>
       )}

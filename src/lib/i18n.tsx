@@ -192,6 +192,14 @@ const en = {
     gsf1Address: "Calle Aurora Núm. 1, paraje Punta Caucedo\nAndrés Boca Chica, Sto. Dgo., Rep. Dom.",
     openMaps: "Open in Google Maps",
   },
+  notFound: {
+    title: "Page not found",
+    subtitle:
+      "The page you are looking for has moved, no longer exists, or never did. Use one of the buttons below to get back on track.",
+    ctaHome: "Back to home",
+    ctaProject: "Explore the Project",
+    brand: "Generadora San Felipe — 467 MW Combined Cycle",
+  },
   footer: {
     company: "Generadora San Felipe Limited Partnership",
     navTitle: "Navigation",
@@ -568,6 +576,14 @@ const es: Translations = {
     gsf1Label: "GSF-1",
     gsf1Address: "Calle Aurora Núm. 1, paraje Punta Caucedo\nAndrés Boca Chica, Sto. Dgo., Rep. Dom.",
     openMaps: "Abrir en Google Maps",
+  },
+  notFound: {
+    title: "Página no encontrada",
+    subtitle:
+      "La página que estás buscando se movió, ya no existe, o nunca existió. Usa uno de los botones de abajo para retomar la navegación.",
+    ctaHome: "Volver al inicio",
+    ctaProject: "Explorar el Proyecto",
+    brand: "Generadora San Felipe — 467 MW Ciclo Combinado",
   },
   footer: {
     company: "Generadora San Felipe Limited Partnership",

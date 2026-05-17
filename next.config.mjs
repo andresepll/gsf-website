@@ -18,6 +18,10 @@ const scriptSrc = [
   .filter(Boolean)
   .join(" ");
 
+// CSP violation reports POST to this endpoint. Path is the route handler at
+// src/app/api/csp-report/route.ts.
+const CSP_REPORT_URI = "/api/csp-report";
+
 const csp = [
   "default-src 'self'",
   `script-src ${scriptSrc}`,
@@ -32,10 +36,16 @@ const csp = [
   "base-uri 'self'",
   "object-src 'none'",
   "upgrade-insecure-requests",
+  `report-uri ${CSP_REPORT_URI}`,
+  `report-to csp-endpoint`,
 ].join("; ");
+
+// Reporting-Endpoints header pairs with the report-to directive in CSP.
+const reportingEndpoints = `csp-endpoint="${CSP_REPORT_URI}"`;
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },
+  { key: "Reporting-Endpoints", value: reportingEndpoints },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

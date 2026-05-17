@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
+import CountUp from "./CountUp";
 
 export default function Hero() {
   const { t } = useI18n();
@@ -110,8 +111,8 @@ export default function Hero() {
               },
             ].map((stat) => (
               <div key={stat.label}>
-                <div className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
-                  {stat.value}
+                <div className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl tabular-nums">
+                  <CountUp value={stat.value} />
                   <span className="text-accent-400 text-lg ml-0.5">
                     {stat.unit}
                   </span>
