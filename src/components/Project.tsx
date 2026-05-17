@@ -1,13 +1,61 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import ConstructionGallery from "./ConstructionGallery";
 import FadeIn from "./FadeIn";
 import Lightbox from "./Lightbox";
 import SectionEyebrow from "./SectionEyebrow";
+
+const MS_PER_DAY = 86400000;
+
+const TIMELINE_ICONS = [
+  // Notice to proceed — document with check
+  <svg key="i1" aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>,
+  // Major equipment arrival — truck
+  <svg key="i2" aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H15M5.25 18.75H3.375A1.125 1.125 0 012.25 17.625V15.75A3.75 3.75 0 016 12h2.625m9.375 6.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0H20.25a1.125 1.125 0 001.125-1.125V13.5l-2.25-2.25h-3.75M8.25 12V6.108c0-.527.422-.953.94-.999l8.628-.612c.546-.039 1.057.353 1.18.893L19.5 11.25v.0M8.25 12h7.5" />
+  </svg>,
+  // First fire & commissioning — flame
+  <svg key="i3" aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003.001 2.48z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+  </svg>,
+  // Commercial operation — lightning bolt
+  <svg key="i4" aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+  </svg>,
+];
+
+function daysCounter(targetISO: string, now: Date): { kind: "ago" | "until" | "today"; days: number } {
+  const target = new Date(targetISO).getTime();
+  const diffMs = target - now.getTime();
+  const days = Math.round(diffMs / MS_PER_DAY);
+  if (days === 0) return { kind: "today", days: 0 };
+  if (days > 0) return { kind: "until", days };
+  return { kind: "ago", days: Math.abs(days) };
+}
+
+function projectProgress(dates: string[], now: Date): number {
+  if (dates.length < 2) return 0;
+  const start = new Date(dates[0]).getTime();
+  const end = new Date(dates[dates.length - 1]).getTime();
+  const current = now.getTime();
+  return Math.max(0, Math.min(100, ((current - start) / (end - start)) * 100));
+}
+
+function activeMilestoneIndex(dates: string[], now: Date): number {
+  // First upcoming, or last index if all completed
+  const nowMs = now.getTime();
+  for (let i = 0; i < dates.length; i++) {
+    if (new Date(dates[i]).getTime() > nowMs) return i;
+  }
+  return dates.length - 1;
+}
 
 export default function Project() {
   const { t } = useI18n();
@@ -17,6 +65,7 @@ export default function Project() {
     margin: "-100px",
   });
   const [turbineLightboxOpen, setTurbineLightboxOpen] = useState(false);
+  const [expandedMilestone, setExpandedMilestone] = useState<number | null>(null);
 
   const turbineImage = {
     src: "/images/turbine-profile.png",
@@ -62,6 +111,22 @@ export default function Project() {
       description: t.project.tl4desc,
     },
   ];
+
+  const timelineDates = timeline.map((m) => m.date);
+  const activeIdx = activeMilestoneIndex(timelineDates, now);
+  const progressPct = projectProgress(timelineDates, now);
+
+  // Auto-expand the active milestone on mount
+  useEffect(() => {
+    setExpandedMilestone(activeIdx);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const formatDaysLabel = (counter: { kind: "ago" | "until" | "today"; days: number }) => {
+    if (counter.kind === "today") return t.project.tlToday;
+    const template = counter.kind === "ago" ? t.project.tlDaysAgo : t.project.tlDaysUntil;
+    return template.replace("{n}", String(counter.days));
+  };
 
   const impacts = [
     {
@@ -197,31 +262,123 @@ export default function Project() {
             </div>
           </FadeIn>
 
+          {/* Overall project progress bar */}
+          <FadeIn delay={0.1}>
+            <div className="mx-auto mt-8 max-w-3xl">
+              <div className="mb-2 flex items-center justify-between text-xs">
+                <span className="font-medium text-navy-600">{t.project.tlProgressLabel}</span>
+                <span className="font-bold text-accent-600">{Math.round(progressPct)}%</span>
+              </div>
+              <div
+                className="relative h-2 w-full overflow-hidden rounded-full bg-navy-200"
+                role="progressbar"
+                aria-valuenow={Math.round(progressPct)}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={t.project.tlProgressLabel}
+              >
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={timelineInView ? { width: `${progressPct}%` } : { width: 0 }}
+                  transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+                  className="h-full rounded-full bg-gradient-to-r from-accent-500 to-accent-400"
+                />
+              </div>
+              <div className="mt-2 flex items-center justify-between text-[11px] text-navy-500">
+                <span>{timeline[0].year} · {timeline[0].quarter}</span>
+                <span>{timeline[timeline.length - 1].year} · {timeline[timeline.length - 1].quarter}</span>
+              </div>
+            </div>
+          </FadeIn>
+
           <div ref={timelineRef} className="mt-12 relative">
             <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-navy-200 md:-translate-x-px" />
             {timeline.map((item, i) => {
               const isCompleted = new Date(item.date) <= now;
+              const isActive = i === activeIdx;
+              const isExpanded = expandedMilestone === i;
+              const counter = daysCounter(item.date, now);
+              const daysLabel = formatDaysLabel(counter);
+              const isReversed = i % 2 !== 0;
               return (
-                <motion.div key={item.year} initial={{ opacity: 0, y: 20 }} animate={timelineInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4, delay: i * 0.1 }} className={`relative flex items-start gap-6 mb-6 last:mb-0 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
-                  <div className={`absolute left-4 md:left-1/2 top-2 h-2.5 w-2.5 -translate-x-[5px] md:-translate-x-[5px] rounded-full ring-[3px] ring-navy-50 z-10 ${isCompleted ? "bg-accent-500" : "bg-amber-500"}`} />
-                  <div className={`ml-10 md:ml-0 md:w-[calc(50%-1.5rem)] ${i % 2 === 0 ? "md:pr-6 md:text-right" : "md:pl-6"}`}>
-                    <div className="rounded-lg bg-white px-5 py-4 shadow-sm border border-navy-100 hover:shadow-md transition-shadow">
-                      <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 mb-1.5 ${i % 2 === 0 ? "md:justify-end" : ""}`}>
-                        <span className={`text-xs font-bold ${isCompleted ? "text-accent-600" : "text-amber-700"}`}>{item.year}</span>
+                <motion.div
+                  key={item.year}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={timelineInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  className={`relative flex items-start gap-6 mb-6 last:mb-0 ${isReversed ? "md:flex-row-reverse" : "md:flex-row"}`}
+                >
+                  {/* Timeline marker (dot + icon) */}
+                  <div className={`absolute left-4 md:left-1/2 top-2 -translate-x-1/2 z-10 ${isActive ? "scale-110" : ""} transition-transform`}>
+                    <div className={`flex h-9 w-9 items-center justify-center rounded-full ring-4 ring-navy-50 ${
+                      isCompleted ? "bg-accent-500 text-white" : isActive ? "bg-amber-500 text-white animate-pulse" : "bg-white text-navy-400 border border-navy-200"
+                    }`}>
+                      {TIMELINE_ICONS[i] ?? TIMELINE_ICONS[0]}
+                    </div>
+                  </div>
+
+                  {/* Milestone card */}
+                  <div className={`ml-16 md:ml-0 md:w-[calc(50%-2rem)] ${isReversed ? "md:pl-6" : "md:pr-6 md:text-right"}`}>
+                    <button
+                      type="button"
+                      onClick={() => setExpandedMilestone(isExpanded ? null : i)}
+                      aria-expanded={isExpanded}
+                      aria-label={`${isExpanded ? t.project.tlCollapseAria : t.project.tlExpandAria} ${item.title}`}
+                      className={`w-full text-left ${isReversed ? "" : "md:text-right"} rounded-lg px-5 py-4 shadow-sm border transition-all duration-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-50 ${
+                        isActive
+                          ? "bg-white border-accent-300 shadow-md shadow-accent-500/10"
+                          : "bg-white border-navy-100"
+                      }`}
+                    >
+                      <div className={`flex flex-wrap items-center gap-x-2 gap-y-1 ${isReversed ? "" : "md:justify-end"}`}>
+                        <span className={`text-xs font-bold ${isCompleted ? "text-accent-600" : isActive ? "text-amber-700" : "text-navy-500"}`}>{item.year}</span>
                         <span className="text-[11px] text-navy-500">{item.quarter}</span>
                         <span
                           className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                             isCompleted
                               ? "bg-accent-50 text-accent-700"
-                              : "bg-amber-50 text-amber-700"
+                              : isActive
+                              ? "bg-amber-50 text-amber-700"
+                              : "bg-navy-50 text-navy-600"
                           }`}
                         >
-                          {isCompleted ? t.project.statusCompleted : t.project.statusUpcoming}
+                          {isCompleted ? t.project.statusCompleted : isActive ? t.project.statusInProgress : t.project.statusUpcoming}
                         </span>
                       </div>
-                      <h3 className="text-sm font-semibold text-navy-900 leading-snug">{item.title}</h3>
-                      <p className="mt-1 text-xs text-navy-500 leading-relaxed">{item.description}</p>
-                    </div>
+                      <h3 className="mt-1.5 text-sm font-semibold text-navy-900 leading-snug">{item.title}</h3>
+                      <div className={`mt-1 flex items-center gap-1.5 text-[11px] text-navy-500 ${isReversed ? "" : "md:justify-end"}`}>
+                        <svg aria-hidden="true" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{daysLabel}</span>
+                      </div>
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="overflow-hidden"
+                          >
+                            <p className="mt-3 text-xs text-navy-500 leading-relaxed">{item.description}</p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                      <div className={`mt-2 flex items-center gap-1 text-[10px] font-medium text-navy-400 ${isReversed ? "" : "md:justify-end"}`}>
+                        <span>{isExpanded ? t.project.tlCollapse : t.project.tlExpand}</span>
+                        <svg
+                          aria-hidden="true"
+                          className={`h-3 w-3 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                      </div>
+                    </button>
                   </div>
                 </motion.div>
               );
