@@ -1,11 +1,12 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 import ConstructionGallery from "./ConstructionGallery";
 import FadeIn from "./FadeIn";
+import Lightbox from "./Lightbox";
 import SectionEyebrow from "./SectionEyebrow";
 
 export default function Project() {
@@ -15,6 +16,12 @@ export default function Project() {
     once: true,
     margin: "-100px",
   });
+  const [turbineLightboxOpen, setTurbineLightboxOpen] = useState(false);
+
+  const turbineImage = {
+    src: "/images/turbine-profile.png",
+    alt: "GE Vernova 7HA.02 gas turbine — lateral profile",
+  };
 
   const specs = [
     { label: t.project.specConfig, value: t.project.specConfigVal },
@@ -102,28 +109,44 @@ export default function Project() {
             </p>
           </FadeIn>
 
-          <div className="mt-16 space-y-10 lg:space-y-12">
+          <div className="mt-16 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
             <FadeIn delay={0.1}>
-              <div className="relative mx-auto max-w-6xl">
-                <div className="absolute -inset-4 rounded-2xl bg-navy-50/50 -rotate-1" />
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-navy-100 px-6 py-10 sm:px-10 sm:py-12 lg:px-16 lg:py-16">
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-2xl bg-navy-50/50 -rotate-2" />
+                <button
+                  type="button"
+                  onClick={() => setTurbineLightboxOpen(true)}
+                  aria-label={t.project.turbineZoomAria}
+                  className="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-navy-100 p-8 lg:p-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2"
+                >
                   <Image
-                    src="/images/turbine-profile.png"
-                    alt="GE Vernova 7HA.02 gas turbine — lateral profile"
+                    src={turbineImage.src}
+                    alt={turbineImage.alt}
                     width={1920}
                     height={681}
-                    className="w-full h-auto"
+                    className="w-full h-auto transition-transform duration-500 group-hover:scale-[1.02]"
+                    sizes="(min-width: 1024px) 600px, 100vw"
                     priority
-                    sizes="(min-width: 1024px) 1152px, 100vw"
                   />
-                </div>
+                  <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/85 backdrop-blur-sm px-3 py-1.5 text-[11px] font-medium text-navy-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 pointer-events-none">
+                    <svg aria-hidden="true" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
+                    </svg>
+                    {t.project.constructionZoomHint}
+                  </div>
+                </button>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                {specs.map((spec) => (
-                  <div key={spec.label} className="group rounded-xl border border-navy-100 bg-white p-5 transition-all duration-300 hover:border-accent-200 hover:shadow-lg hover:shadow-accent-500/5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {specs.map((spec, i) => (
+                  <div
+                    key={spec.label}
+                    className={`group rounded-xl border border-navy-100 bg-white p-5 transition-all duration-300 hover:border-accent-200 hover:shadow-lg hover:shadow-accent-500/5 ${
+                      i === specs.length - 1 ? "sm:col-span-2" : ""
+                    }`}
+                  >
                     <div className="text-xs font-medium uppercase tracking-wider text-navy-500 mb-1">{spec.label}</div>
                     <div className="text-sm font-semibold text-navy-900">{spec.value}</div>
                   </div>
@@ -146,6 +169,22 @@ export default function Project() {
               </div>
             </FadeIn>
           </div>
+
+          <Lightbox
+            open={turbineLightboxOpen}
+            images={[turbineImage]}
+            index={0}
+            onClose={() => setTurbineLightboxOpen(false)}
+            onPrev={() => {}}
+            onNext={() => {}}
+            caption={turbineImage.alt}
+            labels={{
+              close: t.lightbox.close,
+              previous: t.lightbox.previous,
+              next: t.lightbox.next,
+              dialogLabel: t.project.turbineLightboxDialogLabel,
+            }}
+          />
         </div>
       </div>
 

@@ -71,6 +71,8 @@ const en = {
     specNetVal: "467 MW",
     specContract: "Contract",
     specContractVal: "400 MW",
+    turbineZoomAria: "Open full-size view of the GE Vernova 7HA.02 turbine",
+    turbineLightboxDialogLabel: "GE Vernova 7HA.02 turbine — full size",
     locationTitle: "Strategic Location",
     locationValue: "Punta Caucedo, Boca Chica, Dominican Republic",
     locationGas: "Natural gas supplied via ENADOM storage & regasification",
@@ -433,6 +435,8 @@ const es: Translations = {
     specNetVal: "467 MW",
     specContract: "Contrato",
     specContractVal: "400 MW",
+    turbineZoomAria: "Abrir vista a tamaño completo de la turbina GE Vernova 7HA.02",
+    turbineLightboxDialogLabel: "Turbina GE Vernova 7HA.02 — tamaño completo",
     locationTitle: "Ubicación Estratégica",
     locationValue: "Punta Caucedo, Boca Chica, República Dominicana",
     locationGas:
