@@ -4,8 +4,10 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
+import { newsArticleListSchema, NewsArticleInput } from "@/lib/schema";
 import FadeIn from "./FadeIn";
 import SectionEyebrow from "./SectionEyebrow";
+import StructuredData from "./StructuredData";
 
 const featuredArticles = [
   {
@@ -13,6 +15,7 @@ const featuredArticles = [
     source: "GE Vernova",
     date: "Dec 17, 2024",
     dateEs: "17 Dic 2024",
+    dateIso: "2024-12-17",
     titleEn:
       "GE Vernova announces the first Class H order in the Caribbean",
     titleEs:
@@ -24,6 +27,7 @@ const featuredArticles = [
     source: "Presidencia de la República",
     date: "Aug 11, 2025",
     dateEs: "11 Ago 2025",
+    dateIso: "2025-08-11",
     titleEn:
       "Minister Joel Santos supervises construction of Generadora San Felipe I alongside the Electric Cabinet",
     titleEs:
@@ -38,6 +42,7 @@ const articles = [
     source: "El Día",
     date: "Aug 11, 2025",
     dateEs: "11 Ago 2025",
+    dateIso: "2025-08-11",
     titleEn:
       "Generadora San Felipe I will create more than 650 jobs",
     titleEs:
@@ -49,6 +54,7 @@ const articles = [
     source: "Hoy Digital",
     date: "Jul 28, 2025",
     dateEs: "28 Jul 2025",
+    dateIso: "2025-07-28",
     titleEn:
       "By 2028, the Dominican Republic will have robust energy generation",
     titleEs:
@@ -60,6 +66,7 @@ const articles = [
     source: "BNAmericas",
     date: "2025",
     dateEs: "2025",
+    dateIso: "2025-01-01",
     titleEn:
       "Pending agreements from 800MW tender approved in Dominican Republic",
     titleEs:
@@ -71,6 +78,7 @@ const articles = [
     source: "Acento",
     date: "Feb 27, 2026",
     dateEs: "27 Feb 2026",
+    dateIso: "2026-02-27",
     titleEn:
       "Accountability Report 2026: Joel Santos explains plan to incorporate new megawatts into the system",
     titleEs:
@@ -79,6 +87,16 @@ const articles = [
   },
 ];
 
+const newsArticleInputs: NewsArticleInput[] = [...featuredArticles, ...articles].map(
+  (a) => ({
+    url: a.url,
+    headline: a.titleEn,
+    source: a.source,
+    datePublished: a.dateIso,
+    imageUrl: a.image,
+  })
+);
+
 export default function News() {
   const { t, locale } = useI18n();
   const ref = useRef(null);
@@ -86,6 +104,10 @@ export default function News() {
 
   return (
     <section className="bg-gray-50 py-16 lg:py-20">
+      <StructuredData
+        id="ld-news-articles"
+        data={newsArticleListSchema(newsArticleInputs)}
+      />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <FadeIn>
           <SectionEyebrow label={t.news.tag} />
