@@ -5,7 +5,8 @@ import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
 
 export default function Footer() {
-  const { t } = useI18n();
+  const { t, locale, setLocale } = useI18n();
+  const toggleLocale = () => setLocale(locale === "en" ? "es" : "en");
 
   return (
     <footer className="bg-white text-navy-900">
@@ -34,8 +35,10 @@ export default function Footer() {
             </h4>
             <ul className="space-y-1">
               {[
-                { href: "#project", label: t.nav.project },
-                { href: "#sustainability", label: t.nav.sustainability },
+                { href: "/#project", label: t.nav.project },
+                { href: "/#sustainability", label: t.nav.sustainability },
+                { href: "/#news", label: t.footer.navNews },
+                { href: "/#locations", label: t.footer.navLocations },
               ].map((link) => (
                 <li key={link.href}>
                   <a
@@ -63,6 +66,14 @@ export default function Footer() {
                   className="inline-flex items-center min-h-[44px] text-sm text-navy-600 hover:text-accent-600 transition-colors"
                 >
                   {t.footer.epc}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/sitemap.xml"
+                  className="inline-flex items-center min-h-[44px] text-sm text-navy-600 hover:text-accent-600 transition-colors"
+                >
+                  {t.footer.sitemap}
                 </a>
               </li>
             </ul>
@@ -184,12 +195,26 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Generadora San Felipe Limited
             Partnership. {t.footer.copyright}
           </p>
-          <Link
-            href="/privacy"
-            className="text-xs text-navy-500 hover:text-accent-600 transition-colors"
-          >
-            {t.footer.privacy}
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/privacy"
+              className="text-xs text-navy-500 hover:text-accent-600 transition-colors"
+            >
+              {t.footer.privacy}
+            </Link>
+            <span aria-hidden="true" className="text-navy-300">·</span>
+            <button
+              type="button"
+              onClick={toggleLocale}
+              aria-label={t.langToggleAriaLabel}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-navy-500 hover:text-accent-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 rounded"
+            >
+              <svg aria-hidden="true" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+              <span>{locale === "en" ? "English · ES" : "Español · EN"}</span>
+            </button>
+          </div>
         </div>
       </div>
     </footer>

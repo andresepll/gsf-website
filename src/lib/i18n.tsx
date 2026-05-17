@@ -203,7 +203,10 @@ const en = {
   footer: {
     company: "Generadora San Felipe Limited Partnership",
     navTitle: "Navigation",
+    navNews: "News",
+    navLocations: "Locations",
     resourcesTitle: "Resources",
+    sitemap: "XML Sitemap",
     complaints: "Complaints & Grievances",
     epc: "EPC Contractor — TSK",
     contactTitle: "Contact",
@@ -213,6 +216,7 @@ const en = {
     instagramLabel: "Generadora San Felipe on Instagram",
     linkedinLabel: "Generadora San Felipe on LinkedIn",
     privacy: "Privacy Notice",
+    languageToggleLabel: "Language",
   },
   complaints: {
     back: "Back to Home",
@@ -588,7 +592,10 @@ const es: Translations = {
   footer: {
     company: "Generadora San Felipe Limited Partnership",
     navTitle: "Navegación",
+    navNews: "Noticias",
+    navLocations: "Ubicaciones",
     resourcesTitle: "Recursos",
+    sitemap: "Mapa del sitio XML",
     complaints: "Quejas y Denuncias",
     epc: "Contratista EPC — TSK",
     contactTitle: "Contacto",
@@ -598,6 +605,7 @@ const es: Translations = {
     instagramLabel: "Generadora San Felipe en Instagram",
     linkedinLabel: "Generadora San Felipe en LinkedIn",
     privacy: "Aviso de Privacidad",
+    languageToggleLabel: "Idioma",
   },
   complaints: {
     back: "Volver al Inicio",
