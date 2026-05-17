@@ -20,9 +20,7 @@ export default function Project() {
     { label: t.project.specConfig, value: t.project.specConfigVal },
     { label: t.project.specGas, value: t.project.specGasVal },
     { label: t.project.specSteam, value: t.project.specSteamVal },
-    { label: t.project.specPPA, value: t.project.specPPAVal },
-    { label: t.project.specNet, value: t.project.specNetVal },
-    { label: t.project.specEfficiency, value: t.project.specEfficiencyVal },
+    { label: t.project.specCapacity, value: t.project.specCapacityVal },
   ];
 
   const now = new Date();
@@ -103,28 +101,26 @@ export default function Project() {
             </p>
           </FadeIn>
 
-          <div className="mt-16 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
+          <div className="mt-16 space-y-10 lg:space-y-12">
             <FadeIn delay={0.1}>
-              <div className="relative">
-                <div className="absolute -inset-4 rounded-2xl bg-navy-50/50 -rotate-2" />
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-navy-100 p-8 lg:p-12">
-                  <Image src="/images/turbine-profile.png" alt="GE Vernova 7HA.02 gas turbine — lateral profile" width={1200} height={425} className="w-full h-auto" />
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-white/80 backdrop-blur-sm px-4 py-3">
-                    <div>
-                      <div className="text-xs text-navy-500">Technology</div>
-                      <div className="text-sm font-semibold text-navy-900">7HA.02 Combustor</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs text-navy-500">Class</div>
-                      <div className="text-sm font-semibold text-navy-900">HA-Class</div>
-                    </div>
-                  </div>
+              <div className="relative mx-auto max-w-6xl">
+                <div className="absolute -inset-4 rounded-2xl bg-navy-50/50 -rotate-1" />
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-navy-50 to-navy-100 px-6 py-10 sm:px-10 sm:py-12 lg:px-16 lg:py-16">
+                  <Image
+                    src="/images/turbine-profile.png"
+                    alt="GE Vernova 7HA.02 gas turbine — lateral profile"
+                    width={1920}
+                    height={681}
+                    className="w-full h-auto"
+                    priority
+                    sizes="(min-width: 1024px) 1152px, 100vw"
+                  />
                 </div>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {specs.map((spec) => (
                   <div key={spec.label} className="group rounded-xl border border-navy-100 bg-white p-5 transition-all duration-300 hover:border-accent-200 hover:shadow-lg hover:shadow-accent-500/5">
                     <div className="text-xs font-medium uppercase tracking-wider text-navy-500 mb-1">{spec.label}</div>
