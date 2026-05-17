@@ -115,7 +115,7 @@ export default function News() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="bg-gray-50 py-16 lg:py-20">
+    <section id="news" className="bg-gray-50 py-16 lg:py-20">
       <StructuredData
         id="ld-news-articles"
         data={newsArticleListSchema(newsArticleInputs)}
