@@ -20,12 +20,12 @@ export default function PlantMapPreview() {
             Internal preview · noindex
           </span>
           <h1 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
-            GSF-1 Simplified Plot Plan
+            GSF-1 Plot Plan — Visual Pass v2
           </h1>
           <p className="max-w-2xl text-sm text-navy-500 leading-relaxed">
-            Hand-traced stylized interpretation of the EPC plot plan. Visual
-            pass first — labels and interactive hotspots will follow once the
-            aesthetic is approved.
+            The real EPC plot plan rendered as inverted strokes over a navy
+            stage. Compass and scale bar overlaid. Labels and interactive
+            hotspots come next once the aesthetic is approved.
           </p>
         </div>
 
@@ -33,49 +33,13 @@ export default function PlantMapPreview() {
 
         <div className="mt-8 rounded-2xl border border-navy-200 bg-white p-6">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-navy-500">
-            Reference legend (working)
+            Next iteration
           </h2>
-          <ul className="mt-4 grid grid-cols-1 gap-3 text-sm text-navy-700 sm:grid-cols-2">
-            <li>
-              <span className="font-semibold">Top, long structure:</span> support
-              / loading / pipe rack
-            </li>
-            <li>
-              <span className="font-semibold">3 circular tanks:</span> water /
-              process storage
-            </li>
-            <li>
-              <span className="font-semibold">Top-right block:</span> admin /
-              control building
-            </li>
-            <li>
-              <span className="font-semibold">Center-left rectangle:</span> main
-              building / gas turbine hall
-            </li>
-            <li>
-              <span className="font-semibold">Center cluster:</span> HRSG + Gas
-              Turbine + Steam Turbine
-            </li>
-            <li>
-              <span className="font-semibold">Right column:</span> air-cooled
-              condenser (ACC) modules
-            </li>
-            <li>
-              <span className="font-semibold">Bottom-left grid:</span>{" "}
-              switchyard (with transformer markers)
-            </li>
-            <li>
-              <span className="font-semibold">Accent circle near HRSG:</span>{" "}
-              stack / chimney
-            </li>
-            <li>
-              <span className="font-semibold">Bottom-right block:</span>{" "}
-              auxiliary building
-            </li>
-            <li>
-              <span className="font-semibold">Dashed perimeter:</span> site
-              boundary with fence posts
-            </li>
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-navy-700">
+            <li>If the inversion feel is right, we lock the visual treatment and move on to overlays.</li>
+            <li>Knockout key zones with accent fills (turbines, HRSG, switchyard, ACC, stack).</li>
+            <li>Add numbered hotspots with hover/click that reveal a side panel with name + technical detail.</li>
+            <li>Mobile: stack layout so hotspots become a list under the map.</li>
           </ul>
         </div>
 
