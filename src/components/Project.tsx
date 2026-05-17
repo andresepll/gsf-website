@@ -4,10 +4,12 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
+import { eventListSchema, MilestoneEventInput } from "@/lib/schema";
 import ConstructionGallery from "./ConstructionGallery";
 import FadeIn from "./FadeIn";
 import Lightbox from "./Lightbox";
 import SectionEyebrow from "./SectionEyebrow";
+import StructuredData from "./StructuredData";
 
 const MS_PER_DAY = 86400000;
 
@@ -55,6 +57,61 @@ function activeMilestoneIndex(dates: string[], now: Date): number {
     if (new Date(dates[i]).getTime() > nowMs) return i;
   }
   return dates.length - 1;
+}
+
+// Locale-stable timeline data for structured data (JSON-LD).
+// Kept in English so search engines / Knowledge Graph index canonical content.
+const SCHEMA_TIMELINE: Array<{
+  date: string;
+  title: string;
+  description: string;
+}> = [
+  {
+    date: "2024-04-30",
+    title: "Notice to Proceed",
+    description:
+      "Formal start of the EPC contract, contractor mobilization, and beginning of major civil works for the Generadora San Felipe 467 MW combined cycle plant.",
+  },
+  {
+    date: "2025-12-31",
+    title: "Major Equipment Arrival",
+    description:
+      "Reception of the GE Vernova 7HA.02 gas turbine, steam turbine, generators, and HRSG modules on site at Punta Caucedo, Boca Chica.",
+  },
+  {
+    date: "2026-11-30",
+    title: "First Fire and Commissioning",
+    description:
+      "Initial ignition of the gas turbine, functional testing, performance validation, and reliability run for the 467 MW combined cycle plant.",
+  },
+  {
+    date: "2027-05-31",
+    title: "Commercial Operation",
+    description:
+      "Official declaration of commercial operation, delivering 400 MW under PPA contract to the Dominican Republic national grid.",
+  },
+];
+
+function buildEventInputs(now: Date): MilestoneEventInput[] {
+  const nowMs = now.getTime();
+  const activeIdx = activeMilestoneIndex(
+    SCHEMA_TIMELINE.map((m) => m.date),
+    now
+  );
+  return SCHEMA_TIMELINE.map((m, i) => {
+    const completed = new Date(m.date).getTime() <= nowMs;
+    const status: MilestoneEventInput["status"] = completed
+      ? "completed"
+      : i === activeIdx
+      ? "in_progress"
+      : "upcoming";
+    return {
+      title: m.title,
+      description: m.description,
+      date: m.date,
+      status,
+    };
+  });
 }
 
 export default function Project() {
@@ -160,6 +217,11 @@ export default function Project() {
 
   return (
     <section id="project" className="relative">
+      <StructuredData
+        id="ld-timeline-events"
+        data={eventListSchema(buildEventInputs(now))}
+      />
+
       {/* Technical Specs */}
       <div className="bg-white py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">

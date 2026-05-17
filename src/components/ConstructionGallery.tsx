@@ -4,10 +4,14 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
+import { imageGallerySchema, GalleryImageInput } from "@/lib/schema";
 import Lightbox from "./Lightbox";
 import SectionEyebrow from "./SectionEyebrow";
+import StructuredData from "./StructuredData";
 
 const AUTO_ADVANCE_MS = 4000;
+
+const GALLERY_PUBLISHED = "2026-03-02";
 
 const images = [
   { src: "/images/construction-1.jpg", alt: "Construction progress — aerial view 1" },
@@ -18,6 +22,13 @@ const images = [
   { src: "/images/construction-6.jpg", alt: "Construction progress — aerial view 6" },
   { src: "/images/construction-7.jpg", alt: "Construction progress — panoramic view" },
 ];
+
+const galleryImages: GalleryImageInput[] = images.map((img) => ({
+  src: img.src,
+  caption: img.alt,
+  description: `${img.alt} — Generadora San Felipe 467 MW combined cycle plant under construction at Punta Caucedo, Boca Chica, Dominican Republic.`,
+  datePublished: GALLERY_PUBLISHED,
+}));
 
 export default function ConstructionGallery() {
   const { t } = useI18n();
@@ -49,6 +60,13 @@ export default function ConstructionGallery() {
 
   return (
     <div className="bg-navy-50 py-16 lg:py-20 overflow-hidden">
+      <StructuredData
+        id="ld-construction-gallery"
+        data={imageGallerySchema(
+          "GSF-1 construction progress aerial views",
+          galleryImages
+        )}
+      />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           ref={ref}

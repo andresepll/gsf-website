@@ -4,7 +4,9 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SkipLink from "@/components/SkipLink";
+import StructuredData from "@/components/StructuredData";
 import { Providers } from "@/components/Providers";
+import { organizationSchema, websiteSchema } from "@/lib/schema";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -73,32 +75,6 @@ export const metadata: Metadata = {
   },
 };
 
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Generadora San Felipe Limited Partnership",
-  alternateName: "GSF",
-  url: SITE_URL,
-  logo: `${SITE_URL}/images/logo-gsf-new.png`,
-  description:
-    "Generadora San Felipe construye una central de ciclo combinado de 467 MW en República Dominicana con tecnología GE Vernova 7HA.02.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Av. Gustavo Mejía Ricart #102, Suite 701",
-    addressLocality: "Santo Domingo",
-    addressRegion: "Piantini",
-    addressCountry: "DO",
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+1-809-563-8182",
-    email: "contacto@gsf.com.do",
-    contactType: "customer service",
-    areaServed: "DO",
-    availableLanguage: ["Spanish", "English"],
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -109,12 +85,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationJsonLd),
-          }}
-        />
+        <StructuredData id="ld-organization" data={organizationSchema()} />
+        <StructuredData id="ld-website" data={websiteSchema()} />
         <Providers>
           <SkipLink />
           <Navbar />
