@@ -11,6 +11,18 @@ import StructuredData from "./StructuredData";
 
 const featuredArticles = [
   {
+    image: "/images/news/mem.jpg",
+    source: "Ministerio de Energía y Minas",
+    date: "Apr 19, 2026",
+    dateEs: "19 Abr 2026",
+    dateIso: "2026-04-19",
+    titleEn:
+      "San Felipe I takes shape: Government supervises project that will add 470 MW and strengthen the country's electrical security",
+    titleEs:
+      "San Felipe I toma forma: Gobierno supervisa obra que sumará 470 MW y reforzará la seguridad eléctrica del país",
+    url: "https://mem.gob.do/san-felipe-i-toma-forma-gobierno-supervisa-obra-que-sumara-470-mw-y-reforzara-la-seguridad-electrica-del-pais/",
+  },
+  {
     image: "/images/news/gevernova.jpg",
     source: "GE Vernova",
     date: "Dec 17, 2024",
@@ -120,8 +132,8 @@ export default function News() {
           </p>
         </FadeIn>
 
-        {/* Two featured articles side by side */}
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Featured articles */}
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredArticles.map((article, i) => (
             <FadeIn key={article.url} delay={0.1 + i * 0.1}>
               <a
