@@ -109,8 +109,8 @@ export default function Project() {
             </p>
           </FadeIn>
 
-          <div className="mt-16 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
-            <FadeIn delay={0.1}>
+          <div className="mt-16 grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-12 lg:items-center">
+            <FadeIn delay={0.1} className="lg:col-span-2">
               <div className="relative">
                 <div className="absolute -inset-4 rounded-2xl bg-navy-50/50 -rotate-2" />
                 <button
@@ -125,7 +125,7 @@ export default function Project() {
                     width={1920}
                     height={681}
                     className="w-full h-auto transition-transform duration-500 group-hover:scale-[1.02]"
-                    sizes="(min-width: 1024px) 600px, 100vw"
+                    sizes="(min-width: 1024px) 800px, 100vw"
                     priority
                   />
                   <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-white/85 backdrop-blur-sm px-3 py-1.5 text-[11px] font-medium text-navy-700 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 pointer-events-none">
@@ -138,32 +138,30 @@ export default function Project() {
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.2}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {specs.map((spec, i) => (
+            <FadeIn delay={0.2} className="lg:col-span-1">
+              <div className="grid grid-cols-1 gap-3">
+                {specs.map((spec) => (
                   <div
                     key={spec.label}
-                    className={`group rounded-xl border border-navy-100 bg-white p-5 transition-all duration-300 hover:border-accent-200 hover:shadow-lg hover:shadow-accent-500/5 ${
-                      i === specs.length - 1 ? "sm:col-span-2" : ""
-                    }`}
+                    className="group rounded-xl border border-navy-100 bg-white p-4 transition-all duration-300 hover:border-accent-200 hover:shadow-lg hover:shadow-accent-500/5"
                   >
                     <div className="text-xs font-medium uppercase tracking-wider text-navy-500 mb-1">{spec.label}</div>
                     <div className="text-sm font-semibold text-navy-900">{spec.value}</div>
                   </div>
                 ))}
-              </div>
-              <div className="mt-6 rounded-xl bg-navy-950 p-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 rounded-lg bg-accent-500/10 p-2">
-                    <svg aria-hidden="true" className="h-5 w-5 text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="text-sm font-semibold text-white">{t.project.locationTitle}</div>
-                    <div className="mt-1 text-sm text-navy-300">{t.project.locationValue}</div>
-                    <div className="mt-2 text-xs text-navy-400">{t.project.locationGas}</div>
+                <div className="rounded-xl bg-navy-950 p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 rounded-lg bg-accent-500/10 p-1.5">
+                      <svg aria-hidden="true" className="h-4 w-4 text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-white">{t.project.locationTitle}</div>
+                      <div className="mt-1 text-xs text-navy-300 leading-snug">{t.project.locationValue}</div>
+                      <div className="mt-1.5 text-[11px] text-navy-400 leading-snug">{t.project.locationGas}</div>
+                    </div>
                   </div>
                 </div>
               </div>
