@@ -9,6 +9,10 @@ export const dynamic = "force-dynamic";
 // surface.
 const SLIDING_WINDOW_MS = 60_000;
 const MAX_REPORTS_PER_WINDOW = 20;
+// Cap on simultaneously tracked buckets per edge isolate. Each entry is
+// tiny but we still want a hard ceiling so a flood of distinct sources can't
+// grow the map without bound until the isolate recycles.
+const MAX_BUCKETS = 1000;
 type Bucket = { count: number; resetAt: number };
 const buckets = new Map<string, Bucket>();
 
@@ -22,15 +26,33 @@ function rateLimitKey(req: NextRequest): string {
   return parts.length === 4 ? parts.slice(0, 3).join(".") : ip;
 }
 
+function pruneExpired(now: number): void {
+  const expired: string[] = [];
+  buckets.forEach((b, k) => {
+    if (b.resetAt < now) expired.push(k);
+  });
+  expired.forEach((k) => buckets.delete(k));
+  // Still over cap after pruning expired? Drop oldest insertion order until fit.
+  if (buckets.size > MAX_BUCKETS) {
+    const excess = buckets.size - MAX_BUCKETS;
+    const drop: string[] = [];
+    buckets.forEach((_, k) => {
+      if (drop.length < excess) drop.push(k);
+    });
+    drop.forEach((k) => buckets.delete(k));
+  }
+}
+
 function checkRateLimit(key: string): boolean {
   const now = Date.now();
   const bucket = buckets.get(key);
   if (!bucket || bucket.resetAt < now) {
+    if (buckets.size >= MAX_BUCKETS) pruneExpired(now);
     buckets.set(key, { count: 1, resetAt: now + SLIDING_WINDOW_MS });
     return true;
   }
+  if (bucket.count >= MAX_REPORTS_PER_WINDOW) return false;
   bucket.count++;
-  if (bucket.count > MAX_REPORTS_PER_WINDOW) return false;
   return true;
 }
 
