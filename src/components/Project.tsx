@@ -173,8 +173,10 @@ export default function Project() {
   const activeIdx = activeMilestoneIndex(timelineDates, now);
   const progressPct = projectProgress(timelineDates, now);
 
-  // Auto-expand the active milestone on mount
+  // Auto-expand the active milestone on mount. Intentional one-shot setState
+  // in effect — runs once after hydration to surface the current phase.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setExpandedMilestone(activeIdx);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -843,6 +843,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     } catch {
       // localStorage may be unavailable (private mode, blocked storage)
     }
+    // Client-side hydration of saved/browser locale. Intentional setState in
+    // effect — localStorage and navigator are not available during SSR.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocale(detected);
     setHydrated(true);
   }, []);
