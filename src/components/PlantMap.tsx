@@ -2,18 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 
 /**
  * Interactive stylized plot plan for GSF-1.
  *
- * v3 — adds numbered hotspots placed at approximate zone centers in plan
- * space (viewBox 2440x1372). Coordinates are best-guess from visual
- * inspection of the source plot plan; the user is expected to confirm
- * what each numbered marker should represent before the v4 pass that
- * locks labels + technical detail.
+ * v7 — locks the real zone names (15 zones identified by the user) in
+ * both Spanish and English. Coordinates remain pixel-precise from the
+ * flood-fill detection in /tmp/find_zones.swift run against the
+ * user-annotated PNG.
  */
 
 const SOURCE_ASPECT_RATIO = 2440 / 1372;
+
+type LocaleString = { en: string; es: string };
 
 type Hotspot = {
   id: number;
@@ -21,10 +23,8 @@ type Hotspot = {
   cy: number;
   /** Optional bounding box, in viewBox coords, for a translucent zone fill */
   zone?: { x: number; y: number; width: number; height: number };
-  /** Working name visible until the user confirms the real label */
-  placeholderName: string;
-  /** Optional working description */
-  placeholderDescription: string;
+  name: LocaleString;
+  description?: LocaleString;
 };
 
 // Coordinates extracted programmatically from gsf-plotplan-anotado.png
@@ -38,120 +38,132 @@ const HOTSPOTS: Hotspot[] = [
     cx: 465,
     cy: 941,
     zone: { x: 165, y: 825, width: 531, height: 210 },
-    placeholderName: "Zone 1",
-    placeholderDescription: "Pending identification.",
+    name: { es: "Subestación", en: "Substation" },
   },
   {
     id: 2,
     cx: 455,
     cy: 749,
     zone: { x: 377, y: 717, width: 158, height: 71 },
-    placeholderName: "Zone 2",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Cuarto de Control — Subestación",
+      en: "Substation Control Room",
+    },
   },
   {
     id: 3,
     cx: 435,
     cy: 576,
     zone: { x: 163, y: 479, width: 536, height: 190 },
-    placeholderName: "Zone 3",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Edificio de Almacén, Taller y Mantenimiento",
+      en: "Warehouse, Workshop & Maintenance Building",
+    },
   },
   {
     id: 4,
     cx: 601,
     cy: 325,
     zone: { x: 429, y: 288, width: 346, height: 77 },
-    placeholderName: "Zone 4",
-    placeholderDescription: "Pending identification.",
+    name: { es: "Edificio Administrativo", en: "Administration Building" },
   },
   {
     id: 5,
     cx: 1133,
     cy: 356,
     zone: { x: 1065, y: 321, width: 138, height: 72 },
-    placeholderName: "Zone 5",
-    placeholderDescription: "Pending identification.",
+    name: { es: "Almacén de Químicos", en: "Chemical Storage" },
   },
   {
     id: 6,
     cx: 1820,
     cy: 260,
     zone: { x: 1743, y: 155, width: 162, height: 240 },
-    placeholderName: "Zone 6",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Planta de Tratamiento de Agua",
+      en: "Water Treatment Plant",
+    },
   },
   {
     id: 7,
     cx: 2207,
     cy: 732,
     zone: { x: 2147, y: 330, width: 122, height: 806 },
-    placeholderName: "Zone 7",
-    placeholderDescription: "Pending identification.",
+    name: { es: "Torre de Enfriamiento", en: "Cooling Tower" },
   },
   {
     id: 8,
     cx: 2235,
     cy: 1250,
     zone: { x: 2123, y: 1180, width: 232, height: 137 },
-    placeholderName: "Zone 8",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Patio de Interconexión — Gas Natural",
+      en: "Natural Gas Interconnection Yard",
+    },
   },
   {
     id: 9,
     cx: 1768,
     cy: 1087,
     zone: { x: 1618, y: 1015, width: 299, height: 146 },
-    placeholderName: "Zone 9",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "HRSG — Caldera de Recuperación de Calor",
+      en: "HRSG — Heat Recovery Steam Generator",
+    },
   },
   {
     id: 10,
     cx: 1583,
     cy: 1080,
     zone: { x: 1550, y: 1040, width: 65, height: 80 },
-    placeholderName: "Zone 10",
-    placeholderDescription: "Pending identification.",
+    name: { es: "Chimenea By-Pass", en: "By-Pass Stack" },
   },
   {
     id: 11,
     cx: 1431,
     cy: 1075,
     zone: { x: 1247, y: 1024, width: 374, height: 108 },
-    placeholderName: "Zone 11",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Turbina de Gas (GE 7HA.02)",
+      en: "Gas Turbine (GE 7HA.02)",
+    },
   },
   {
     id: 12,
     cx: 952,
     cy: 994,
     zone: { x: 911, y: 941, width: 81, height: 109 },
-    placeholderName: "Zone 12",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Generador Turbina de Gas (H65)",
+      en: "Gas Turbine Generator (H65)",
+    },
   },
   {
     id: 13,
     cx: 1161,
     cy: 729,
     zone: { x: 1051, y: 683, width: 221, height: 96 },
-    placeholderName: "Zone 13",
-    placeholderDescription: "Pending identification.",
+    name: { es: "Edificio de Control", en: "Control Building" },
   },
   {
     id: 14,
     cx: 1243,
     cy: 525,
     zone: { x: 1209, y: 504, width: 73, height: 52 },
-    placeholderName: "Zone 14",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Generador Turbina de Vapor (H35)",
+      en: "Steam Turbine Generator (H35)",
+    },
   },
   {
     id: 15,
     cx: 1577,
     cy: 655,
     zone: { x: 1433, y: 599, width: 288, height: 113 },
-    placeholderName: "Zone 15",
-    placeholderDescription: "Pending identification.",
+    name: {
+      es: "Turbina de Vapor (GE STF-A650)",
+      en: "Steam Turbine (GE STF-A650)",
+    },
   },
 ];
 
@@ -161,9 +173,11 @@ export default function PlantMap({
   /** Debug mode: overlay the user's annotated PNG above the inverted plan so we can verify hotspot positions visually. */
   showAnnotationOverlay?: boolean;
 }) {
+  const { locale } = useI18n();
   const [active, setActive] = useState<number | null>(null);
   const reduceMotion = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
+  const pick = (s: LocaleString) => (locale === "es" ? s.es : s.en);
 
   // ESC closes the panel
   useEffect(() => {
@@ -327,7 +341,7 @@ export default function PlantMap({
                       onClick={() => setActive(h.id === active ? null : h.id)}
                       role="button"
                       tabIndex={0}
-                      aria-label={`Open details for zone ${h.id}: ${h.placeholderName}`}
+                      aria-label={`Open details for zone ${h.id}: ${pick(h.name)}`}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
@@ -390,12 +404,14 @@ export default function PlantMap({
                   {activeHotspot.id}
                 </span>
                 <h3 className="text-lg font-semibold text-navy-900">
-                  {activeHotspot.placeholderName}
+                  {pick(activeHotspot.name)}
                 </h3>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-navy-600">
-                {activeHotspot.placeholderDescription}
-              </p>
+              {activeHotspot.description && (
+                <p className="mt-3 text-sm leading-relaxed text-navy-600">
+                  {pick(activeHotspot.description)}
+                </p>
+              )}
               <button
                 type="button"
                 onClick={() => setActive(null)}
@@ -429,7 +445,7 @@ export default function PlantMap({
                       <span className="inline-block w-6 font-mono font-bold text-accent-600">
                         {h.id}.
                       </span>{" "}
-                      {h.placeholderName}
+                      {pick(h.name)}
                     </button>
                   </li>
                 ))}
