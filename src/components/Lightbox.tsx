@@ -47,7 +47,10 @@ export default function Lightbox({
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
+  // Portal mount detection: flip a state once after hydration so createPortal
+  // only renders on the client. Intentional setState in effect.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

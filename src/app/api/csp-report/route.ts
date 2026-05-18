@@ -137,7 +137,6 @@ export async function POST(req: NextRequest) {
 
   for (const v of violations) {
     if (!v.directive && !v.blockedUri) continue;
-    // eslint-disable-next-line no-console
     console.warn(
       "[csp-violation]",
       JSON.stringify({
