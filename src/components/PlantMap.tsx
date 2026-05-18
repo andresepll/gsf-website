@@ -155,7 +155,12 @@ const HOTSPOTS: Hotspot[] = [
   },
 ];
 
-export default function PlantMap() {
+export default function PlantMap({
+  showAnnotationOverlay = false,
+}: {
+  /** Debug mode: overlay the user's annotated PNG above the inverted plan so we can verify hotspot positions visually. */
+  showAnnotationOverlay?: boolean;
+}) {
   const [active, setActive] = useState<number | null>(null);
   const reduceMotion = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -204,6 +209,17 @@ export default function PlantMap() {
               draggable={false}
             />
           </picture>
+
+          {/* DEBUG: user annotation overlay — exact pixels the user painted */}
+          {showAnnotationOverlay && (
+            <img
+              src="/images/gsf-plotplan-anotado.png"
+              alt="User annotation overlay (debug)"
+              className="pointer-events-none absolute inset-0 h-full w-full select-none object-contain"
+              style={{ opacity: 0.5, mixBlendMode: "normal" }}
+              draggable={false}
+            />
+          )}
 
           {/* SVG overlay: accents + hotspots */}
           <svg
