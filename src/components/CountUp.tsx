@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 
 type CountUpProps = {
   /** Final value as a string. May include prefix like "+$" or suffix like "%", "M". */
@@ -35,7 +36,13 @@ function parseStatValue(input: string): ParsedValue {
 }
 
 export default function CountUp({ value, durationMs = 1400 }: CountUpProps) {
+  const { locale } = useI18n();
   const parsed = useMemo(() => parseStatValue(value), [value]);
+  const bcp47 = locale === "es" ? "es-DO" : "en-US";
+  const integerFormat = useMemo(
+    () => new Intl.NumberFormat(bcp47, { maximumFractionDigits: 0 }),
+    [bcp47]
+  );
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const reduceMotion = useReducedMotion();
@@ -63,7 +70,7 @@ export default function CountUp({ value, durationMs = 1400 }: CountUpProps) {
   const formatted =
     parsed.decimals > 0
       ? display.toFixed(parsed.decimals)
-      : Math.round(display).toLocaleString("en-US");
+      : integerFormat.format(Math.round(display));
 
   return (
     <span ref={ref} aria-label={value}>

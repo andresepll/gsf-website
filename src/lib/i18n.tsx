@@ -200,6 +200,13 @@ const en = {
     ctaProject: "Explore the Project",
     brand: "Generadora San Felipe — 467 MW Combined Cycle",
   },
+  plantMap: {
+    zoneDetail: "Zone detail",
+    close: "Close",
+    emptyHelp:
+      "Click a numbered marker on the map to see the working description of that zone.",
+    openZoneAria: "Open details for zone",
+  },
   footer: {
     company: "Generadora San Felipe Limited Partnership",
     navTitle: "Navigation",
@@ -589,6 +596,13 @@ const es: Translations = {
     ctaProject: "Explorar el Proyecto",
     brand: "Generadora San Felipe — 467 MW Ciclo Combinado",
   },
+  plantMap: {
+    zoneDetail: "Detalle de zona",
+    close: "Cerrar",
+    emptyHelp:
+      "Haz clic en un marcador numerado del mapa para ver la descripción de esa zona.",
+    openZoneAria: "Abrir detalles de la zona",
+  },
   footer: {
     company: "Generadora San Felipe Limited Partnership",
     navTitle: "Navegación",
@@ -845,22 +859,24 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
   }, [locale, hydrated]);
 
+  // Read current locale via ref so side effects below can run outside the
+  // setState updater (updaters fire twice under Strict Mode).
+  const localeRef = useRef<Locale>(locale);
+  useEffect(() => {
+    localeRef.current = locale;
+  }, [locale]);
+
   const handleSetLocale = useCallback((newLocale: Locale) => {
-    setLocale((current) => {
-      if (newLocale !== current) {
-        // Announce in the new locale so the screen reader pronounces it correctly
-        setAnnouncement(translations[newLocale].langChanged);
-        // Cancel any pending clear so rapid toggles don't queue stale callbacks
-        if (announcementTimerRef.current) {
-          clearTimeout(announcementTimerRef.current);
-        }
-        announcementTimerRef.current = setTimeout(() => {
-          setAnnouncement("");
-          announcementTimerRef.current = null;
-        }, ANNOUNCEMENT_CLEAR_MS);
-      }
-      return newLocale;
-    });
+    if (newLocale === localeRef.current) return;
+    setLocale(newLocale);
+    setAnnouncement(translations[newLocale].langChanged);
+    if (announcementTimerRef.current) {
+      clearTimeout(announcementTimerRef.current);
+    }
+    announcementTimerRef.current = setTimeout(() => {
+      setAnnouncement("");
+      announcementTimerRef.current = null;
+    }, ANNOUNCEMENT_CLEAR_MS);
   }, []);
 
   useEffect(() => {

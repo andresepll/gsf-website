@@ -4,15 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 
-/**
- * Interactive stylized plot plan for GSF-1.
- *
- * v7 — locks the real zone names (15 zones identified by the user) in
- * both Spanish and English. Coordinates remain pixel-precise from the
- * flood-fill detection in /tmp/find_zones.swift run against the
- * user-annotated PNG.
- */
-
 const SOURCE_ASPECT_RATIO = 2440 / 1372;
 
 type LocaleString = { en: string; es: string };
@@ -28,10 +19,7 @@ type Hotspot = {
 };
 
 // Coordinates extracted programmatically from gsf-plotplan-anotado.png
-// via Swift flood-fill component detection. See /tmp/find_zones.swift for
-// the detection pipeline. Each zone's bbox + centroid come from the
-// pixel-precise position of the colored highlight the user painted on
-// the source image.
+// via Swift flood-fill component detection on the colored zone highlights.
 const HOTSPOTS: Hotspot[] = [
   {
     id: 1,
@@ -173,7 +161,7 @@ export default function PlantMap({
   /** Debug mode: overlay the user's annotated PNG above the inverted plan so we can verify hotspot positions visually. */
   showAnnotationOverlay?: boolean;
 }) {
-  const { locale } = useI18n();
+  const { locale, t } = useI18n();
   const [active, setActive] = useState<number | null>(null);
   const reduceMotion = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -341,7 +329,7 @@ export default function PlantMap({
                       onClick={() => setActive(h.id === active ? null : h.id)}
                       role="button"
                       tabIndex={0}
-                      aria-label={`Open details for zone ${h.id}: ${pick(h.name)}`}
+                      aria-label={`${t.plantMap.openZoneAria} ${h.id}: ${pick(h.name)}`}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
@@ -387,7 +375,7 @@ export default function PlantMap({
         className="rounded-2xl border border-navy-200 bg-white p-6 lg:sticky lg:top-24"
       >
         <h2 className="text-sm font-semibold uppercase tracking-wider text-navy-500">
-          Zone detail
+          {t.plantMap.zoneDetail}
         </h2>
         <AnimatePresence mode="wait">
           {activeHotspot ? (
@@ -417,7 +405,7 @@ export default function PlantMap({
                 onClick={() => setActive(null)}
                 className="mt-4 text-xs font-medium uppercase tracking-wider text-accent-600 hover:text-accent-700"
               >
-                Close
+                {t.plantMap.close}
               </button>
             </motion.div>
           ) : (
@@ -429,11 +417,7 @@ export default function PlantMap({
               transition={{ duration: 0.2 }}
               className="mt-3"
             >
-              <p className="text-sm text-navy-500">
-                Click a numbered marker on the map to see the working description
-                of that zone. All names below are placeholders pending confirmation
-                from the project team.
-              </p>
+              <p className="text-sm text-navy-500">{t.plantMap.emptyHelp}</p>
               <ol className="mt-4 space-y-1 text-sm text-navy-700">
                 {HOTSPOTS.map((h) => (
                   <li key={h.id}>
