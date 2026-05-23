@@ -54,6 +54,7 @@ export const metadata: Metadata = {
     description:
       "Construyendo el futuro energético de la República Dominicana: 467 MW de generación eficiente, confiable y sostenible.",
     type: "website",
+    url: "/",
     locale: "es_DO",
     alternateLocale: ["en_US"],
     siteName: "Generadora San Felipe",

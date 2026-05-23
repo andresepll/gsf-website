@@ -133,6 +133,10 @@ export function newsArticleSchema(input: NewsArticleInput) {
   const image = input.imageUrl.startsWith("http")
     ? input.imageUrl
     : `${SITE_URL}${input.imageUrl}`;
+  const publisher = {
+    "@type": "Organization" as const,
+    name: input.source,
+  };
   return {
     "@type": "NewsArticle",
     headline: input.headline,
@@ -140,10 +144,11 @@ export function newsArticleSchema(input: NewsArticleInput) {
     mainEntityOfPage: input.url,
     datePublished: input.datePublished,
     image,
-    publisher: {
-      "@type": "Organization",
-      name: input.source,
-    },
+    // Google Rich Results recommends `author` on NewsArticle. For coverage
+    // without an individual byline we attribute authorship to the publishing
+    // outlet itself, which Google explicitly accepts.
+    author: publisher,
+    publisher,
     about: organizationRef,
     ...(input.description ? { description: input.description } : {}),
   };
