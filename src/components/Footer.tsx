@@ -30,9 +30,9 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.navTitle}
-            </h4>
+            </h3>
             <ul className="space-y-1">
               {[
                 { href: "/#project", label: t.nav.project },
@@ -54,9 +54,9 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.resourcesTitle}
-            </h4>
+            </h3>
             <ul className="space-y-1">
               <li>
                 <a
@@ -81,9 +81,9 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-navy-500 mb-4">
               {t.footer.contactTitle}
-            </h4>
+            </h3>
             <ul className="space-y-3 text-sm text-navy-600">
               <li>
                 <a
@@ -206,13 +206,13 @@ export default function Footer() {
             <button
               type="button"
               onClick={toggleLocale}
-              aria-label={t.langToggleAriaLabel}
               className="inline-flex items-center gap-1.5 text-xs font-medium text-navy-500 hover:text-accent-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 rounded"
             >
               <svg aria-hidden="true" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
               </svg>
               <span>{locale === "en" ? "English · ES" : "Español · EN"}</span>
+              <span className="sr-only"> — {t.langToggleAriaLabel}</span>
             </button>
           </div>
         </div>

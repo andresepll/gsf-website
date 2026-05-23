@@ -104,10 +104,10 @@ export default function Navbar() {
 
             <button
               onClick={toggleLocale}
-              aria-label={t.langToggleAriaLabel}
               className="inline-flex items-center min-h-[44px] text-xs font-bold tracking-wider uppercase border border-navy-200 text-navy-600 rounded-full px-4 hover:bg-navy-50 transition-all duration-300"
             >
               {locale === "en" ? "ES" : "EN"}
+              <span className="sr-only"> — {t.langToggleAriaLabel}</span>
             </button>
 
             <a
@@ -196,7 +196,7 @@ export default function Navbar() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="mt-4 rounded-full bg-accent-500 px-8 py-3 text-lg font-semibold text-white"
+              className="mt-4 rounded-full bg-accent-500 px-8 py-3 text-lg font-bold text-black"
             >
               {t.nav.contact}
             </motion.a>

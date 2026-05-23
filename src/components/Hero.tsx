@@ -60,7 +60,7 @@ export default function Hero() {
             <div className="mt-10 flex flex-wrap gap-4">
               <a
                 href="#locations"
-                className="group inline-flex items-center gap-2 rounded-full bg-accent-500 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-accent-600 hover:shadow-xl hover:shadow-accent-500/25"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent-500 px-8 py-3.5 text-sm font-bold text-black transition-all duration-300 hover:bg-accent-600 hover:shadow-xl hover:shadow-accent-500/25"
               >
                 {t.hero.cta}
                 <svg aria-hidden="true"
