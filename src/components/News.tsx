@@ -4,10 +4,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { useI18n } from "@/lib/i18n";
-import { newsArticleListSchema, NewsArticleInput } from "@/lib/schema";
 import FadeIn from "./FadeIn";
 import SectionEyebrow from "./SectionEyebrow";
-import StructuredData from "./StructuredData";
 
 const featuredArticles = [
   {
@@ -99,15 +97,12 @@ const articles = [
   },
 ];
 
-const newsArticleInputs: NewsArticleInput[] = [...featuredArticles, ...articles].map(
-  (a) => ({
-    url: a.url,
-    headline: a.titleEn,
-    source: a.source,
-    datePublished: a.dateIso,
-    imageUrl: a.image,
-  })
-);
+// Note: we intentionally do NOT emit NewsArticle JSON-LD here.
+// These cards are external press coverage about GSF, not articles
+// published on this site. Marking them as NewsArticle would be a
+// semantic misattribution (mainEntityOfPage points off-domain) and
+// would not yield Rich Results for us either. The site-level
+// Organization, WebSite, Event, and ImageGallery schemas remain.
 
 export default function News() {
   const { t, locale } = useI18n();
@@ -116,10 +111,6 @@ export default function News() {
 
   return (
     <section id="news" className="bg-gray-50 py-16 lg:py-20">
-      <StructuredData
-        id="ld-news-articles"
-        data={newsArticleListSchema(newsArticleInputs)}
-      />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <FadeIn>
           <SectionEyebrow label={t.news.tag} />
